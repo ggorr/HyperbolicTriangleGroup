@@ -1,0 +1,65 @@
+th {
+    text-align: center;
+}
+
+div.pqr {
+    display: inline-block;
+    width: 15px;
+    text-align: right;
+    padding-right: 5px;
+}
+
+td.cond {
+    font-size: 9pt;
+    color: #FF0000;
+    text-align: center;
+}
+
+input.pqr {
+    width: 120px;
+}
+
+div.maxiter {
+    display: inline-block;
+    width: 70px;
+    text-align: right;
+    padding-right: 5px;
+}
+
+input.maxiter {
+    width: 65px;
+}
+
+div.time {
+    display: inline-block;
+    width: 80px;
+    text-align: right;
+    padding-right: 5px;
+}
+
+input.time {
+    width: 100px;
+}
+
+div.left {
+    float: left;
+    padding-right: 30px;
+}
+
+div.right {
+    float: left;
+}
+
+h2.heading {
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+button.big {
+    width: 120px;
+}
+
+td.info {
+    text-align: left;
+    /* font-weight: normal; */
+}
