@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ko-kr" dir="ltr">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="apple-touch-icon" sizes="57x57" href="/icons/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="/icons/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/icons/apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="/icons/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/icons/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="/icons/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/icons/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="/icons/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192" href="/icons/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="/icons/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+	<link rel="manifest" href="/icons/manifest.json">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="/icons/ms-icon-144x144.png">
+	<meta name="theme-color" content="#ffffff">
+	<title>Hyperbolic Triangle Group</title>
+
+	<style>
+		th {
+			text-align: center;
+		}
+
+		div.pqr {
+			display: inline-block;
+			width: 15px;
+			text-align: right;
+			padding-right: 5px;
+		}
+
+		input.pqr {
+			width: 120px;
+		}
+
+		div.maxiter {
+			display: inline-block;
+			width: 70px;
+			text-align: right;
+			padding-right: 5px;
+		}
+
+		input.maxiter {
+			width: 65px;
+		}
+
+		div.time {
+			display: inline-block;
+			width: 80px;
+			text-align: right;
+			padding-right: 5px;
+		}
+
+		input.time {
+			width: 100px;
+		}
+	</style>
+
+	<script src="htg.js"></script>
+	<script src="complex.js"></script>
+	<script src="triangle.js"></script>
+	<script src="group.js"></script>
+</head>
+
+<body>
+	<div style="float: left;padding-right: 30px;">
+		<h2 style="padding-bottom: 10px;text-align: center;">Hyperbolic<br>Triangle Group<br>Draw at once</h2>
+		<table>
+			<tr>
+				<th>
+					<button onclick="loadSample(1)">1</button>
+					<button onclick="loadSample(2)">2</button>
+					<button onclick="loadSample(3)">3</button>
+					<button onclick="loadSample(4)">4</button>
+				</th>
+			</tr>
+			<tr>
+				<th><div class="pqr">p:</div><input class="pqr" type="text" id="p" value="2"
+						onkeydown="if (event.keyCode==13) showTriangle()">
+				</th>
+			</tr>
+			<tr>
+				<th><div class="pqr">q:</div><input class="pqr" type="text" id="q" value="3"
+						onkeydown="if (event.keyCode==13) showTriangle()">
+				</th>
+			</tr>
+			<tr>
+				<th><div class="pqr">r:</div><input class="pqr" type="text" id="r" value="7"
+						onkeydown="if (event.keyCode==13) showTriangle()">
+				</th>
+			</tr>
+			<tr>
+				<th><button style="width: 120px;" onclick="showTriangle()">Show Triangle</button></th>
+			</tr>
+			<tr>
+				<th><div class="maxiter">max iter:</div><input class="maxiter" id="maxiter" value="46"
+						onkeydown="if (event.keyCode==13) draw_atonce()"></th>
+			</tr>
+			<tr>
+				<th><input type="checkbox" id="fill" checked>Fill Triangle</th>
+			</tr>
+			<tr>
+				<th><button style="width: 120px;" onclick="draw_atonce()">Build Image</button></th>
+			</tr>
+			<tr>
+				<th><div class="time">time(sec):</div><input class="time" type="text" id="time" size="22" readonly>
+				</th>
+			</tr>
+			<tr>
+				<th><div class="time">triangles:</div><input class="time" type="text" id="triangles" size="22"
+						readonly></th>
+			</tr>
+			<tr>
+				<td>
+					<p id="info">info: </p>
+				</td>
+			</tr>
+			<!--
+			<tr>
+				<th><button style="width: 120px;" onclick="setInfo('')">Clear Info</button></th>
+			</tr>
+			-->
+			<tr>
+				<th>by K. Park<br>ggorr.kp@gmail.com</th>
+			</tr>
+		</table>
+	</div>
+	<div style="float: left;">
+		<canvas id="canvas"></canvas>
+	</div>
+</body>
+
+</html>
