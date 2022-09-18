@@ -5,7 +5,7 @@ importScripts('complex.js', 'triangle.js', 'group.js');
 
 
 /////////////////////////////////////////////////////////////////////
-// 단계별로 그리려면 다음 코드를 적용한다. htg.js도 변경
+// 단계별로 그리려면 다음 코드를 적용한다. htg.js도 변경해야 한다.
 onmessage = function (event) {
 	var tg = new TriangleGroup(event.data.p, event.data.q, event.data.r);
 	tg.iter = event.data.iter;
@@ -21,7 +21,7 @@ onmessage = function (event) {
 /////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////////////
-// 마지막 한 번만 그리려면 다음 코드를 적용한다. htg.js도 변경
+// 마지막 한 번만 그리려면 다음 코드를 적용한다. htg.js도 변경해야 한다.
 // onmessage = function(event) {
 // 	var tg = new TriangleGroup(event.data.p, event.data.q, event.data.r);
 // 	tg.iter = event.data.iter;
