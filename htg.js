@@ -99,7 +99,7 @@ function build() {
 	worker = new Worker("worker.js");
 
 	/////////////////////////////////////////////////////////////////////
-	// 단계별로 그리려면 다음 코드를 적용한다. worker.js도 변경
+	// 단계별로 그리려면 다음 코드를 적용한다. worker.js도 변경해야 한다.
 	var iterCount = 0;
 	worker.onmessage = function (event) {
 		tg.list.push(event.data);
@@ -115,7 +115,7 @@ function build() {
 	/////////////////////////////////////////////////////////////////////
 
 	/////////////////////////////////////////////////////////////////////
-	// 마지막 한 번만 그리려면 다음 코드를 적용한다. worker.js도 변경
+	// 마지막 한 번만 그리려면 다음 코드를 적용한다. worker.js도 변경해야 한다.
 	// worker.onmessage = function (event) {
 	// 	tg.list = event.data;
 	// 	for (var i = 0; i < tg.list.length; i++)
