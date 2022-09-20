@@ -62,10 +62,20 @@
 		}
 	</style>
 
-	<script src="htg.js"></script>
-	<script src="complex.js"></script>
-	<script src="triangle.js"></script>
-	<script src="group.js"></script>
+	<script type='module'>
+		'use strict';
+		import { loadSample, showTriangle, build_direct, stopBuilding, setInfo } from './htg.js';
+		document.getElementById('sample1').addEventListener('click', () => loadSample(1));
+		document.getElementById('sample2').addEventListener('click', () => loadSample(2));
+		document.getElementById('sample3').addEventListener('click', () => loadSample(3));
+		document.getElementById('sample4').addEventListener('click', () => loadSample(4));
+		document.getElementById('p').addEventListener('keydown', () => { if (event.keyCode == 13) showTriangle(); });
+		document.getElementById('q').addEventListener('keydown', () => { if (event.keyCode == 13) showTriangle(); });
+		document.getElementById('r').addEventListener('keydown', () => { if (event.keyCode == 13) showTriangle(); });
+		document.getElementById('showtriangle').addEventListener('click', showTriangle);
+		document.getElementById('maxiter').addEventListener('keydown', () => { if (event.keyCode == 13) build_direct(); });
+		document.getElementById('build').addEventListener('click', build_direct);
+	</script>
 </head>
 
 <body>
@@ -74,47 +84,50 @@
 		<table>
 			<tr>
 				<th>
-					<button onclick="loadSample(1)">1</button>
-					<button onclick="loadSample(2)">2</button>
-					<button onclick="loadSample(3)">3</button>
-					<button onclick="loadSample(4)">4</button>
+					<button id="sample1">1</button>
+					<button id="sample2">2</button>
+					<button id="sample3">3</button>
+					<button id="sample4">4</button>
 				</th>
 			</tr>
 			<tr>
-				<th><div class="pqr">p:</div><input class="pqr" type="text" id="p" value="2"
-						onkeydown="if (event.keyCode==13) showTriangle()">
+				<th>
+					<div class="pqr">p:</div><input class="pqr" type="text" id="p" value="2">
 				</th>
 			</tr>
 			<tr>
-				<th><div class="pqr">q:</div><input class="pqr" type="text" id="q" value="3"
-						onkeydown="if (event.keyCode==13) showTriangle()">
+				<th>
+					<div class="pqr">q:</div><input class="pqr" type="text" id="q" value="3">
 				</th>
 			</tr>
 			<tr>
-				<th><div class="pqr">r:</div><input class="pqr" type="text" id="r" value="7"
-						onkeydown="if (event.keyCode==13) showTriangle()">
+				<th>
+					<div class="pqr">r:</div><input class="pqr" type="text" id="r" value="7">
 				</th>
 			</tr>
 			<tr>
-				<th><button style="width: 120px;" onclick="showTriangle()">Show Triangle</button></th>
+				<th><button style="width: 120px;" id='showtriangle'>Show Triangle</button></th>
 			</tr>
 			<tr>
-				<th><div class="maxiter">max iter:</div><input class="maxiter" id="maxiter" value="46"
-						onkeydown="if (event.keyCode==13) draw_atonce()"></th>
+				<th>
+					<div class="maxiter">max iter:</div><input class="maxiter" id="maxiter" value="46">
+				</th>
 			</tr>
 			<tr>
 				<th><input type="checkbox" id="fill" checked>Fill Triangle</th>
 			</tr>
 			<tr>
-				<th><button style="width: 120px;" onclick="draw_atonce()">Build Image</button></th>
+				<th><button style="width: 120px;" id="build">Build Image</button></th>
 			</tr>
 			<tr>
-				<th><div class="time">time(sec):</div><input class="time" type="text" id="time" size="22" readonly>
+				<th>
+					<div class="time">time(sec):</div><input class="time" type="text" id="time" size="22" readonly>
 				</th>
 			</tr>
 			<tr>
-				<th><div class="time">triangles:</div><input class="time" type="text" id="triangles" size="22"
-						readonly></th>
+				<th>
+					<div class="time">triangles:</div><input class="time" type="text" id="triangles" size="22" readonly>
+				</th>
 			</tr>
 			<tr>
 				<td>
