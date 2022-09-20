@@ -1,8 +1,8 @@
-/**
- * 
- */
-importScripts('complex.js', 'triangle.js', 'group.js');
+"use strict";
 
+//importScripts('complex.js', 'triangle.js', 'group.js');
+import TriangleGroup from './group.js'
+import Triangle from './triangle.js'
 
 /////////////////////////////////////////////////////////////////////
 // 단계별로 그리려면 다음 코드를 적용한다. htg.js도 변경해야 한다.
