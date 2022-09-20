@@ -23,10 +23,22 @@
 	<meta name="msapplication-TileImage" content="/icons/ms-icon-144x144.png">
 	<meta name="theme-color" content="#ffffff">
 	<link rel="stylesheet" href="htg.css">
-	<script src="htg.js"></script>
-	<script src="complex.js"></script>
-	<script src="triangle.js"></script>
-	<script src="group.js"></script>
+	<script type='module'>
+		'use strict';
+		import { loadSample, showTriangle, build, stopBuilding, setInfo } from './htg.js';
+		document.getElementById('sample1').addEventListener('click', () => loadSample(1));
+		document.getElementById('sample2').addEventListener('click', () => loadSample(2));
+		document.getElementById('sample3').addEventListener('click', () => loadSample(3));
+		document.getElementById('sample4').addEventListener('click', () => loadSample(4));
+		document.getElementById('p').addEventListener('keydown', () => { if (event.keyCode == 13) showTriangle(); });
+		document.getElementById('q').addEventListener('keydown', () => { if (event.keyCode == 13) showTriangle(); });
+		document.getElementById('r').addEventListener('keydown', () => { if (event.keyCode == 13) showTriangle(); });
+		document.getElementById('showtriangle').addEventListener('click', showTriangle);
+		document.getElementById('maxiter').addEventListener('keydown', () => { if (event.keyCode == 13) build(); });
+		document.getElementById('build').addEventListener('click', build);
+		document.getElementById('stop').addEventListener('click', stopBuilding);
+		
+	</script>
 </head>
 
 <body>
@@ -35,50 +47,46 @@
 		<table>
 			<tr>
 				<th>
-					<button onclick="loadSample(1)">1</button>
-					<button onclick="loadSample(2)">2</button>
-					<button onclick="loadSample(3)">3</button>
-					<button onclick="loadSample(4)">4</button>
+					<button id='sample1'>1</button>
+					<button id='sample2'>2</button>
+					<button id='sample3'>3</button>
+					<button id='sample4'>4</button>
 				</th>
 			</tr>
 			<tr>
 				<th>
-					<div class="pqr">p:</div><input class="pqr" id="p" value="2"
-						onkeydown="if (event.keyCode==13) showTriangle()">
+					<div class="pqr">p:</div><input class="pqr" id="p" value="2">
 				</th>
 			</tr>
 			<tr>
 				<th>
-					<div class="pqr">q:</div><input class="pqr" id="q" value="3"
-						onkeydown="if (event.keyCode==13) showTriangle()">
+					<div class="pqr">q:</div><input class="pqr" id="q" value="3">
 				</th>
 			</tr>
 			<tr>
 				<th>
-					<div class="pqr">r:</div><input class="pqr" id="r" value="7"
-						onkeydown="if (event.keyCode==13) showTriangle()">
+					<div class="pqr">r:</div><input class="pqr" id="r" value="7">
 				</th>
 			</tr>
 			<tr>
 				<td class="cond"><sup>*</sup>1/p + 1/q + 1/r &lt 1</td>
 			</tr>
 			<tr>
-				<th><button class='big' onclick="showTriangle()">Show Triangle</button></th>
+				<th><button class='big' id='showtriangle'>Show Triangle</button></th>
 			</tr>
 			<tr>
 				<th>
-					<div class="maxiter">max iter:</div><input class="maxiter" id="maxiter" value="46"
-						onkeydown="if (event.keyCode==13) build()">
+					<div class="maxiter">max iter:</div><input class="maxiter" id="maxiter" value="46">
 				</th>
 			</tr>
 			<tr>
 				<th><input type="checkbox" id="fill" checked> <label for='fill'>Fill Triangle</label></th>
 			</tr>
 			<tr>
-				<th><button class='big' onclick="build()">Build Image</button></th>
+				<th><button class='big' id='build'>Build Image</button></th>
 			</tr>
 			<tr>
-				<th><button class='big' onclick="stopBuilding()">Stop Building</button></th>
+				<th><button class='big' id="stop">Stop Building</button></th>
 			</tr>
 			<tr>
 				<th>
