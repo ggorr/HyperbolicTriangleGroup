@@ -1,3 +1,7 @@
+"use strict";
+
+import TriangleGroup from './group.js';
+
 function setInfo(msg, type) {
 	document.getElementById("info").innerHTML = 'info: ' + msg;
 	if (type == 'error')
@@ -6,7 +10,7 @@ function setInfo(msg, type) {
 		document.getElementById("info").style.color = '#000000'
 }
 function appendInfo(msg) {
-	let prev = document.getElementById("info").innerHTML;
+	const prev = document.getElementById("info").innerHTML;
 	document.getElementById("info").innerHTML = prev + msg;
 }
 
@@ -39,14 +43,14 @@ var worker;
 var interval;
 
 function transformCanvas() {
-	let offset = 10;
-	let radius = Math.min(window.innerWidth, window.innerHeight) / 2 - 2 * offset;
-	let canvas = document.getElementById("canvas");
+	const offset = 10;
+	const radius = Math.min(window.innerWidth, window.innerHeight) / 2 - 2 * offset;
+	const canvas = document.getElementById("canvas");
 	canvas.height = canvas.width = 2 * (radius + offset);
 	context = canvas.getContext('2d');
 
-	let cenX = radius + offset;
-	let cenY = radius + offset;
+	const cenX = radius + offset;
+	const cenY = radius + offset;
 	context.setTransform(radius, 0, 0, -radius, cenX, cenY);
 	context.lineWidth = 1 / radius;
 }
@@ -57,15 +61,15 @@ function showTriangle() {
 	setInfo('', 'normal');
 	transformCanvas();
 	context.strokeStyle = "#000000";
-	let p = Number(document.getElementById("p").value);
-	let q = Number(document.getElementById("q").value);
-	let r = Number(document.getElementById("r").value);
+	const p = Number(document.getElementById("p").value);
+	const q = Number(document.getElementById("q").value);
+	const r = Number(document.getElementById("r").value);
 	if (1 / p + 1 / q + 1 / r >= 1) {
 		setInfo("1/p+1/q+1/r<1", 'error');
 		return;
 	}
-	tg = new TriangleGroup(p, q, r);
-	tg.showTriangle();
+	const tg = new TriangleGroup(p, q, r);
+	tg.showTriangle(context);
 	drawBigCircle();
 	document.getElementById("triangles").value = "";
 	document.getElementById("time").value = "";
@@ -75,36 +79,36 @@ function build() {
 	if (typeof (worker) != "undefined")
 		return;
 	setInfo('', 'normal');
-	let p = Number(document.getElementById("p").value);
-	let q = Number(document.getElementById("q").value);
-	let r = Number(document.getElementById("r").value);
+	const p = Number(document.getElementById("p").value);
+	const q = Number(document.getElementById("q").value);
+	const r = Number(document.getElementById("r").value);
 	if (1 / p + 1 / q + 1 / r >= 1) {
 		setInfo("1/p+1/q+1/r<1", 'error');
 		return;
 	}
-	var tg = new TriangleGroup(p, q, r);
+	const tg = new TriangleGroup(p, q, r);
 	tg.iter = Number(document.getElementById("maxiter").value);
 	tg.fill = document.getElementById("fill").checked;
 
 	transformCanvas();
 	context.strokeStyle = "#000000";
 	context.fillStyle = "#000000";
-	var timeCount = 0;
+	let timeCount = 0;
 	interval = setInterval(function () {
 		timeCount++;
 		document.getElementById("time").value = (timeCount / 10).toFixed(1);
 	}, 100);
 	drawBigCircle();
 
-	worker = new Worker("worker.js");
+	worker = new Worker("worker.js", { type: 'module' });
 
 	/////////////////////////////////////////////////////////////////////
 	// 단계별로 그리려면 다음 코드를 적용한다. worker.js도 변경해야 한다.
-	var iterCount = 0;
+	let iterCount = 0;
 	worker.onmessage = function (event) {
 		tg.list.push(event.data);
 		tg.triangleCount += event.data.length;
-		tg.display(iterCount++);
+		tg.display(context, iterCount++);
 		document.getElementById("time").value = (timeCount / 10).toFixed(1);
 		document.getElementById("triangles").value = "2p x " + tg.triangleCount;
 		document.getElementById("iteration").value = iterCount;
@@ -118,9 +122,9 @@ function build() {
 	// 마지막 한 번만 그리려면 다음 코드를 적용한다. worker.js도 변경해야 한다.
 	// worker.onmessage = function (event) {
 	// 	tg.list = event.data;
-	// 	for (var i = 0; i < tg.list.length; i++)
+	// 	for (let i = 0; i < tg.list.length; i++)
 	// 		tg.triangleCount += tg.list[i].length;
-	// 	tg.displayAll();
+	// 	tg.displayAll(context);
 	// 	document.getElementById("triangles").value = "2p x " + tg.triangleCount;
 	// 	document.getElementById("time").value = (timeCount / 10).toFixed(1);
 	// 	stopBuilding();
@@ -138,17 +142,17 @@ function stopBuilding() {
 	worker = undefined;
 }
 
-function draw_atonce() {
+function build_direct() {
 	transformCanvas();
 	context.strokeStyle = "#000000";
 	context.fillStyle = "#000000";
-	tg = new TriangleGroup(
+	const tg = new TriangleGroup(
 		Number(document.getElementById("p").value),
 		Number(document.getElementById("q").value),
 		Number(document.getElementById("r").value));
 	tg.iter = Number(document.getElementById("maxiter").value);
 	tg.fill = document.getElementById("fill").checked;
-	tg.draw_atonce();
+	tg.draw_direct(context);
 	drawBigCircle();
 }
 
@@ -157,3 +161,5 @@ function drawBigCircle() {
 	context.arc(0, 0, 1, 0, 2 * Math.PI);
 	context.stroke();
 }
+
+export { loadSample, showTriangle, build, build_direct, stopBuilding, setInfo };
