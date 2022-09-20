@@ -1,3 +1,5 @@
+"use strict";
+
 const epsilon = 1e-9;
 
 function isZero(d) {
@@ -40,14 +42,14 @@ class Complex {
 	}
 
 	mul(z) {
-		var t = this.x;
+		const t = this.x;
 		this.x = t * z.x - this.y * z.y;
 		this.y = t * z.y + this.y * z.x;
 		return this;
 	}
 
 	reciprocal(d) {
-		var factor = d / this.squareLength();
+		const factor = d / this.squareLength();
 		this.x *= factor;
 		this.y *= -factor;
 		return this;
@@ -78,3 +80,5 @@ class Complex {
 		return isZero(z.x * w.y - z.y * w.x);
 	}
 }
+
+export { isZero, Complex };
