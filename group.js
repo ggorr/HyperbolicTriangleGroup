@@ -1,3 +1,7 @@
+"use strict";
+import { Complex } from './complex.js';
+import Triangle from './triangle.js';
+
 class TriangleGroup {
 	constructor(p, q, r) {
 		this.p = p;
@@ -10,12 +14,12 @@ class TriangleGroup {
 		this.rotation = new Complex(Math.cos(2 * Math.PI / p), Math.sin(2 * Math.PI / p));
 	}
 
-	showTriangle() {
-		let tr = Triangle.byAngles(this.p, this.q, this.r);
+	showTriangle(context) {
+		const tr = Triangle.byAngles(this.p, this.q, this.r);
 		this.list.push([]);
 		this.list[0].push(tr);
 		this.triangleCount = 1;
-		tr.draw();
+		tr.draw(context);
 	}
 
 	build() {
@@ -27,26 +31,26 @@ class TriangleGroup {
 	}
 
 	buildStep() {
-		let src = this.list[this.list.length - 1];
-		let dst = [];
+		const src = this.list[this.list.length - 1];
+		const dst = [];
 		this.list.push(dst);
 		for (var i = 0; i < src.length; i++) {
-			let next = src[i].getInverseForIteration("AB");
-			if (next != null && !this.listContains(next))
-				dst.push(next);
-			next = src[i].getInverseForIteration("BC");
-			if (next != null && !this.listContains(next))
-				dst.push(next);
-			next = src[i].getInverseForIteration("CA");
-			if (next != null && !this.listContains(next))
-				dst.push(next);
+			const next1 = src[i].getInverseForIteration("AB");
+			if (next1 != null && !this.listContains(next1))
+				dst.push(next1);
+			const next2 = src[i].getInverseForIteration("BC");
+			if (next2 != null && !this.listContains(next2))
+				dst.push(next2);
+			const next3 = src[i].getInverseForIteration("CA");
+			if (next3 != null && !this.listContains(next3))
+				dst.push(next3);
 		}
 		this.triangleCount += dst.length;
 	}
 
 	listContains(tr) {
 		for (var i = 0; i < this.list.length; i++) {
-			let sublist = this.list[i];
+			const sublist = this.list[i];
 			for (var j = 0; j < sublist.length; j++)
 				if (sublist[j].equals(tr))
 					return true;
@@ -63,93 +67,95 @@ class TriangleGroup {
 		return false;
 	}
 	*/
-	displayAll() {
+	displayAll(context) {
 		for (var i = 0; i < this.list.length; i++)
-			this.display(i);
+			this.display(context, i);
 	}
 
-	display(n) {
-		let sublist = this.list[n];
+	display(context, n) {
+		const sublist = this.list[n];
 		if (this.fill) {
 			if ((n & 1) == 0)
 				for (var j = 0; j < sublist.length; j++)
-					this.transformAndFill(Triangle.copy(sublist[j]));
+					this.transformAndFill(context, Triangle.copy(sublist[j]));
 			else
 				for (var j = 0; j < sublist.length; j++)
-					this.transformAndFill(Triangle.conjugate(sublist[j]));
+					this.transformAndFill(context, Triangle.conjugate(sublist[j]));
 		} else {
 			for (var j = 0; j < sublist.length; j++)
-				this.transformAndDraw(Triangle.copy(sublist[j]));
+				this.transformAndDraw(context, Triangle.copy(sublist[j]));
 		}
 	}
 
-	transformAndFill(tr) {
-		tr.fill();
+	transformAndFill(context, tr) {
+		tr.fill(context);
 		for (var i = 1; i < this.p; i++) {
 			tr.mul(this.rotation);
-			tr.fill();
+			tr.fill(context);
 		}
 	}
 
-	transformAndDraw(tr) {
-		let conj = Triangle.conjugate(tr)
-		tr.draw();
-		conj.draw();
+	transformAndDraw(context, tr) {
+		const conj = Triangle.conjugate(tr)
+		tr.draw(context);
+		conj.draw(context);
 		for (var i = 1; i < this.p; i++) {
 			tr.mul(this.rotation);
-			tr.draw();
+			tr.draw(context);
 			conj.mul(this.rotation);
-			conj.draw();
+			conj.draw(context);
 		}
 	}
 
-	draw_atonce() {
-		let startTime = Date.now();
+	draw_direct(context) {
+		const startTime = Date.now();
 		this.list.push([]);
-		let tr = Triangle.byAngles(this.p, this.q, this.r);
+		const tr = Triangle.byAngles(this.p, this.q, this.r);
 		this.list[0].push(tr);
 		if (this.fill)
-			this.transformAndFill(tr, 0);
+			this.transformAndFill(context, tr);
 		else
-			this.transformAndDraw(tr);
+			this.transformAndDraw(context, tr);
 		this.triangleCount++;
 		for (var i = 1; i < this.iter; i++)
-			this.drawStep_atonce();
+			this.drawStep_direct(context);
 		document.getElementById("time").value = ((Date.now() - startTime) / 1000);
-		document.getElementById("triangles").value ="2p x " + this.triangleCount.toString();
+		document.getElementById("triangles").value = "2p x " + this.triangleCount.toString();
 	}
 
-	drawStep_atonce() {
-		let n = this.list.length;
-		let src = this.list[n - 1];
-		let dst = [];
+	drawStep_direct(context) {
+		const n = this.list.length;
+		const src = this.list[n - 1];
+		const dst = [];
 		this.list.push(dst);
 		for (var i = 0; i < src.length; i++) {
 			var next = src[i].getInverseForIteration("AB");
 			if (next != null && !this.listContains(next)) {
 				if (this.fill)
-					this.transformAndFill((n & 1) == 0 ? Triangle.copy(next) : Triangle.conjugate(next));
+					this.transformAndFill(context, (n & 1) == 0 ? Triangle.copy(next) : Triangle.conjugate(next));
 				else
-					this.transformAndDraw(Triangle.copy(next));
+					this.transformAndDraw(context, Triangle.copy(next));
 				dst.push(next);
 			}
 			next = src[i].getInverseForIteration("BC");
 			if (next != null && !this.listContains(next)) {
 				if (this.fill)
-					this.transformAndFill((n & 1) == 0 ? Triangle.copy(next) : Triangle.conjugate(next));
+					this.transformAndFill(context, (n & 1) == 0 ? Triangle.copy(next) : Triangle.conjugate(next));
 				else
-					this.transformAndDraw(Triangle.copy(next));
+					this.transformAndDraw(context, Triangle.copy(next));
 				dst.push(next);
 			}
 			next = src[i].getInverseForIteration("CA");
 			if (next != null && !this.listContains(next)) {
 				if (this.fill)
-					this.transformAndFill((n & 1) == 0 ? Triangle.copy(next) : Triangle.conjugate(next));
+					this.transformAndFill(context, (n & 1) == 0 ? Triangle.copy(next) : Triangle.conjugate(next));
 				else
-					this.transformAndDraw(Triangle.copy(next));
+					this.transformAndDraw(context, Triangle.copy(next));
 				dst.push(next);
 			}
 		}
 		this.triangleCount += dst.length;
 	}
 }
+
+export default TriangleGroup;
