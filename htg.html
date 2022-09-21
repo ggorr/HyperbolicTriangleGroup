@@ -37,7 +37,6 @@
 		document.getElementById('maxiter').addEventListener('keydown', () => { if (event.keyCode == 13) build(); });
 		document.getElementById('build').addEventListener('click', build);
 		document.getElementById('stop').addEventListener('click', stopBuilding);
-		
 	</script>
 </head>
 
@@ -55,7 +54,7 @@
 			</tr>
 			<tr>
 				<th>
-					<div class="pqr">p:</div><input class="pqr" id="p" value="2">
+					<div class="pqr">p:</div><input class="pqr" id="p" value="2" required>
 				</th>
 			</tr>
 			<tr>
@@ -105,7 +104,7 @@
 			</tr>
 			<tr>
 				<td>
-					<p id="info" class="info">info: </p>
+					<p id="info">info: </p>
 				</td>
 			</tr>
 			<!--
