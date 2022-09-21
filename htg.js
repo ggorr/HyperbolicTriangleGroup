@@ -10,7 +10,7 @@ function setInfo(msg, type) {
 		document.getElementById("info").style.color = '#000000'
 }
 function appendInfo(msg) {
-	const prev = document.getElementById("info").innerHTML;
+	let prev = document.getElementById("info").innerHTML;
 	document.getElementById("info").innerHTML = prev + msg;
 }
 
@@ -38,61 +38,59 @@ function loadSample(button) {
 	}
 }
 
-var context;
-var worker;
-var interval;
+let worker;
+let interval;
 
 function transformCanvas() {
-	const offset = 10;
-	const radius = Math.min(window.innerWidth, window.innerHeight) / 2 - 2 * offset;
-	const canvas = document.getElementById("canvas");
+	let offset = 10;
+	let radius = Math.min(window.innerWidth, window.innerHeight) / 2 - 2 * offset;
+	let canvas = document.getElementById("canvas");
 	canvas.height = canvas.width = 2 * (radius + offset);
-	context = canvas.getContext('2d');
-
-	const cenX = radius + offset;
-	const cenY = radius + offset;
-	context.setTransform(radius, 0, 0, -radius, cenX, cenY);
-	context.lineWidth = 1 / radius;
+	window.context = canvas.getContext('2d');
+	let cenX = radius + offset;
+	let cenY = radius + offset;
+	window.context.setTransform(radius, 0, 0, -radius, cenX, cenY);
+	window.context.lineWidth = 1 / radius;
 }
 
 function showTriangle() {
-	if (typeof (worker) != "undefined")
+	if (typeof worker !== "undefined")
 		return;
 	setInfo('', 'normal');
 	transformCanvas();
-	context.strokeStyle = "#000000";
-	const p = Number(document.getElementById("p").value);
-	const q = Number(document.getElementById("q").value);
-	const r = Number(document.getElementById("r").value);
+	window.context.strokeStyle = "#000000";
+	let p = Number(document.getElementById("p").value);
+	let q = Number(document.getElementById("q").value);
+	let r = Number(document.getElementById("r").value);
 	if (1 / p + 1 / q + 1 / r >= 1) {
 		setInfo("1/p+1/q+1/r<1", 'error');
 		return;
 	}
-	const tg = new TriangleGroup(p, q, r);
-	tg.showTriangle(context);
+	let tg = new TriangleGroup(p, q, r);
+	tg.showTriangle();
 	drawBigCircle();
 	document.getElementById("triangles").value = "";
 	document.getElementById("time").value = "";
 }
 
 function build() {
-	if (typeof (worker) != "undefined")
+	if (typeof worker !== "undefined")
 		return;
 	setInfo('', 'normal');
-	const p = Number(document.getElementById("p").value);
-	const q = Number(document.getElementById("q").value);
-	const r = Number(document.getElementById("r").value);
+	let p = Number(document.getElementById("p").value);
+	let q = Number(document.getElementById("q").value);
+	let r = Number(document.getElementById("r").value);
 	if (1 / p + 1 / q + 1 / r >= 1) {
 		setInfo("1/p+1/q+1/r<1", 'error');
 		return;
 	}
-	const tg = new TriangleGroup(p, q, r);
+	let tg = new TriangleGroup(p, q, r);
 	tg.iter = Number(document.getElementById("maxiter").value);
 	tg.fill = document.getElementById("fill").checked;
 
 	transformCanvas();
-	context.strokeStyle = "#000000";
-	context.fillStyle = "#000000";
+	window.context.strokeStyle = "#000000";
+	window.context.fillStyle = "#000000";
 	let timeCount = 0;
 	interval = setInterval(function () {
 		timeCount++;
@@ -108,7 +106,7 @@ function build() {
 	worker.onmessage = function (event) {
 		tg.list.push(event.data);
 		tg.triangleCount += event.data.length;
-		tg.display(context, iterCount++);
+		tg.display(iterCount++);
 		document.getElementById("time").value = (timeCount / 10).toFixed(1);
 		document.getElementById("triangles").value = "2p x " + tg.triangleCount;
 		document.getElementById("iteration").value = iterCount;
@@ -124,7 +122,7 @@ function build() {
 	// 	tg.list = event.data;
 	// 	for (let i = 0; i < tg.list.length; i++)
 	// 		tg.triangleCount += tg.list[i].length;
-	// 	tg.displayAll(context);
+	// 	tg.displayAll();
 	// 	document.getElementById("triangles").value = "2p x " + tg.triangleCount;
 	// 	document.getElementById("time").value = (timeCount / 10).toFixed(1);
 	// 	stopBuilding();
@@ -135,7 +133,7 @@ function build() {
 }
 
 function stopBuilding() {
-	if (typeof (worker) == 'undefined')
+	if (typeof worker === "undefined")
 		return;
 	clearInterval(interval);
 	worker.terminate();
@@ -144,22 +142,22 @@ function stopBuilding() {
 
 function build_direct() {
 	transformCanvas();
-	context.strokeStyle = "#000000";
-	context.fillStyle = "#000000";
-	const tg = new TriangleGroup(
+	window.context.strokeStyle = "#000000";
+	window.context.fillStyle = "#000000";
+	let tg = new TriangleGroup(
 		Number(document.getElementById("p").value),
 		Number(document.getElementById("q").value),
 		Number(document.getElementById("r").value));
 	tg.iter = Number(document.getElementById("maxiter").value);
 	tg.fill = document.getElementById("fill").checked;
-	tg.draw_direct(context);
+	tg.draw_direct();
 	drawBigCircle();
 }
 
 function drawBigCircle() {
-	context.beginPath();
-	context.arc(0, 0, 1, 0, 2 * Math.PI);
-	context.stroke();
+	window.context.beginPath();
+	window.context.arc(0, 0, 1, 0, 2 * Math.PI);
+	window.context.stroke();
 }
 
 export { loadSample, showTriangle, build, build_direct, stopBuilding, setInfo };
