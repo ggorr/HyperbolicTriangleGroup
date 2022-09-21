@@ -42,14 +42,14 @@ class Complex {
 	}
 
 	mul(z) {
-		const t = this.x;
+		let t = this.x;
 		this.x = t * z.x - this.y * z.y;
 		this.y = t * z.y + this.y * z.x;
 		return this;
 	}
 
 	reciprocal(d) {
-		const factor = d / this.squareLength();
+		let factor = d / this.squareLength();
 		this.x *= factor;
 		this.y *= -factor;
 		return this;
