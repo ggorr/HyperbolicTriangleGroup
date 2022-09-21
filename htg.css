@@ -9,14 +9,14 @@ div.pqr {
     padding-right: 5px;
 }
 
+input.pqr {
+    width: 120px;
+}
+
 td.cond {
     font-size: 9pt;
     color: #FF0000;
     text-align: center;
-}
-
-input.pqr {
-    width: 120px;
 }
 
 div.maxiter {
@@ -59,7 +59,8 @@ button.big {
     width: 120px;
 }
 
-td.info {
+#info {
     text-align: left;
-    /* font-weight: normal; */
+    /* color: #FF0000;
+       font-weight: normal; */
 }
