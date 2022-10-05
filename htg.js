@@ -98,7 +98,7 @@ function build() {
 	}, 100);
 	drawBigCircle();
 
-	worker = new Worker("worker.js", { type: 'module' });
+	worker = new Worker("worker.js");
 
 	/////////////////////////////////////////////////////////////////////
 	// 단계별로 그리려면 다음 코드를 적용한다. worker.js도 변경해야 한다.
