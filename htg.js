@@ -40,6 +40,8 @@ function loadSample(button) {
 
 let worker;
 let interval;
+let tg;
+let justIt;
 
 function transformCanvas() {
 	let offset = 10;
@@ -56,6 +58,10 @@ function transformCanvas() {
 function showTriangle() {
 	if (typeof worker !== "undefined")
 		return;
+	justIt = true;
+	let el = document.getElementById('download');
+	while (el.firstChild)
+		el.removeChild(el.firstChild);
 	setInfo('', 'normal');
 	transformCanvas();
 	window.context.strokeStyle = "#000000";
@@ -66,7 +72,7 @@ function showTriangle() {
 		setInfo("1/p+1/q+1/r<1", 'error');
 		return;
 	}
-	let tg = new TriangleGroup(p, q, r);
+	tg = new TriangleGroup(p, q, r);
 	tg.showTriangle();
 	drawBigCircle();
 	document.getElementById("triangles").value = "";
@@ -76,6 +82,10 @@ function showTriangle() {
 function build() {
 	if (typeof worker !== "undefined")
 		return;
+	justIt = false;
+	let el = document.getElementById('download');
+	while (el.firstChild)
+		el.removeChild(el.firstChild);
 	setInfo('', 'normal');
 	let p = Number(document.getElementById("p").value);
 	let q = Number(document.getElementById("q").value);
@@ -84,8 +94,8 @@ function build() {
 		setInfo("1/p+1/q+1/r<1", 'error');
 		return;
 	}
-	let tg = new TriangleGroup(p, q, r);
-	tg.iter = Number(document.getElementById("maxiter").value);
+	tg = new TriangleGroup(p, q, r);
+	tg.iter = parseInt(document.getElementById("maxiter").value);
 	tg.fill = document.getElementById("fill").checked;
 
 	transformCanvas();
@@ -98,7 +108,7 @@ function build() {
 	}, 100);
 	drawBigCircle();
 
-	worker = new Worker("worker.js");
+	worker = new Worker("worker.js", { type: 'module' });
 
 	/////////////////////////////////////////////////////////////////////
 	// 단계별로 그리려면 다음 코드를 적용한다. worker.js도 변경해야 한다.
@@ -106,7 +116,7 @@ function build() {
 	worker.onmessage = function (event) {
 		tg.list.push(event.data);
 		tg.triangleCount += event.data.length;
-		tg.display(iterCount++);
+		tg.drawStep(iterCount++);
 		document.getElementById("time").value = (timeCount / 10).toFixed(1);
 		document.getElementById("triangles").value = "2p x " + tg.triangleCount;
 		document.getElementById("iteration").value = iterCount;
@@ -122,7 +132,7 @@ function build() {
 	// 	tg.list = event.data;
 	// 	for (let i = 0; i < tg.list.length; i++)
 	// 		tg.triangleCount += tg.list[i].length;
-	// 	tg.displayAll();
+	// 	tg.drawAll();
 	// 	document.getElementById("triangles").value = "2p x " + tg.triangleCount;
 	// 	document.getElementById("time").value = (timeCount / 10).toFixed(1);
 	// 	stopBuilding();
@@ -140,6 +150,28 @@ function stopBuilding() {
 	worker = undefined;
 }
 
+function saveSvg() {
+	let unit = parseInt(document.getElementById('svg-unit').value);
+	let p = document.getElementById("p").value.trim();
+	let q = document.getElementById("q").value.trim();
+	let r = document.getElementById("r").value.trim();
+	let filename = `${p}${q}${r}.svg`;
+	let svg = `<svg version="1.1" baseProfile="full" width="${unit}" height="${unit}" viewBox="-1 -1 2 2"
+ 		xmlns="http://www.w3.org/2000/svg" stroke="rgb(26,26,26)" stroke-width="${1 / unit}" 
+		fill="${tg.fill & !justIt ? "rgb(192,192,192)" : "transparent"}">` +
+		tg.getSvgAll(justIt) + '<circle cx="0" cy="0" r="1" fill="transparent"/></svg>';
+	// stroke="${tg.fill & !justIt ? "rgb(26,26,26)" : "black"}"
+	let blob = new Blob([svg], { type: 'image/svg+xml' });
+	let link = document.createElement("a");
+	link.download = filename;
+	link.innerHTML = "Download " + filename;
+	link.href = window.URL.createObjectURL(blob);
+	let el = document.getElementById('download');
+	while (el.firstChild)
+		el.removeChild(el.firstChild);
+	el.appendChild(link);
+}
+
 function build_direct() {
 	transformCanvas();
 	window.context.strokeStyle = "#000000";
@@ -148,7 +180,7 @@ function build_direct() {
 		Number(document.getElementById("p").value),
 		Number(document.getElementById("q").value),
 		Number(document.getElementById("r").value));
-	tg.iter = Number(document.getElementById("maxiter").value);
+	tg.iter = parseInt(document.getElementById("maxiter").value);
 	tg.fill = document.getElementById("fill").checked;
 	tg.draw_direct();
 	drawBigCircle();
@@ -160,4 +192,4 @@ function drawBigCircle() {
 	window.context.stroke();
 }
 
-export { loadSample, showTriangle, build, build_direct, stopBuilding, setInfo };
+export { loadSample, showTriangle, build, build_direct, stopBuilding, saveSvg, setInfo };
