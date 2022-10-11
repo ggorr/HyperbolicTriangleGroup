@@ -67,6 +67,10 @@ class Triangle {
 		return new Triangle(Complex.conjugate(src.A), Complex.conjugate(src.B), Complex.conjugate(src.C), src.axis);
 	}
 
+	equals(t) {
+		return this.A.equals(t.A) && this.B.equals(t.B) && this.C.equals(t.C);
+	}
+
 	mul(z) {
 		this.A.mul(z);
 		this.B.mul(z);
@@ -94,25 +98,25 @@ class Triangle {
 		}
 	}
 
-	draw() {
+	stroke() {
 		window.context.beginPath();
 		if (this.axis == "AB") {
 			window.context.moveTo(this.B.x, this.B.y);
-			Triangle.drawSegment(this.B, this.C);
-			Triangle.drawSegment(this.C, this.A);
+			Triangle.strokeSegment(this.B, this.C);
+			Triangle.strokeSegment(this.C, this.A);
 		} else if (this.axis == "BC") {
 			window.context.moveTo(this.C.x, this.C.y);
-			Triangle.drawSegment(this.C, this.A);
-			Triangle.drawSegment(this.A, this.B);
+			Triangle.strokeSegment(this.C, this.A);
+			Triangle.strokeSegment(this.A, this.B);
 		} else if (this.axis == "CA") {
 			window.context.moveTo(this.A.x, this.A.y);
-			Triangle.drawSegment(this.A, this.B);
-			Triangle.drawSegment(this.B, this.C);
+			Triangle.strokeSegment(this.A, this.B);
+			Triangle.strokeSegment(this.B, this.C);
 		} else {
 			window.context.moveTo(this.A.x, this.A.y);
-			Triangle.drawSegment(this.A, this.B);
-			Triangle.drawSegment(this.B, this.C);
-			Triangle.drawSegment(this.C, this.A);
+			Triangle.strokeSegment(this.A, this.B);
+			Triangle.strokeSegment(this.B, this.C);
+			Triangle.strokeSegment(this.C, this.A);
 		}
 		window.context.stroke();
 	}
@@ -120,17 +124,44 @@ class Triangle {
 	fill() {
 		window.context.beginPath();
 		window.context.moveTo(this.A.x, this.A.y);
-		Triangle.drawSegment(this.A, this.B);
-		Triangle.drawSegment(this.B, this.C);
-		Triangle.drawSegment(this.C, this.A);
+		Triangle.strokeSegment(this.A, this.B);
+		Triangle.strokeSegment(this.B, this.C);
+		Triangle.strokeSegment(this.C, this.A);
 		// window.context.fillStyle = "#000000";
 		window.context.fill();
 	}
 
-	equals(t) {
-		return this.A.equals(t.A) && this.B.equals(t.B) && this.C.equals(t.C);
+	strokeSvg() {
+		let path;
+		if (this.axis == "AB") {
+			path = `<path d='M${this.B.x} ${this.B.y}`
+			path += Triangle.strokeSegmentSvg(this.B, this.C);
+			path += Triangle.strokeSegmentSvg(this.C, this.A);
+		} else if (this.axis == "BC") {
+			path = `<path d='M${this.C.x} ${this.C.y}`
+			path += Triangle.strokeSegmentSvg(this.C, this.A);
+			path += Triangle.strokeSegmentSvg(this.A, this.B);
+		} else if (this.axis == "CA") {
+			path = `<path d='M${this.A.x} ${this.A.y}`
+			path += Triangle.strokeSegmentSvg(this.A, this.B);
+			path += Triangle.strokeSegmentSvg(this.B, this.C);
+		} else {
+			path = `<path d='M${this.A.x} ${this.A.y}`
+			path += Triangle.strokeSegmentSvg(this.A, this.B);
+			path += Triangle.strokeSegmentSvg(this.B, this.C);
+			path += Triangle.strokeSegmentSvg(this.C, this.A);
+		}
+		return path + `'/>`;
 	}
 
+	fillSvg() {
+		let path = `<path d='M${this.A.x} ${this.A.y}`
+		path += Triangle.strokeSegmentSvg(this.A, this.B);
+		path += Triangle.strokeSegmentSvg(this.B, this.C);
+		path += Triangle.strokeSegmentSvg(this.C, this.A);
+		return path + `'/>`;
+	}
+	
 	static circleInversion(a, b, z) {
 		let d = 2 * (a.x * b.y - a.y * b.x);
 		let lenA = (1 + a.squareLength()) / d;
@@ -139,7 +170,7 @@ class Triangle {
 		return Complex.sub(z, c).conjugate().reciprocal(c.squareLength() - 1).add(c);
 	}
 
-	static drawSegment(z, w) {
+	static strokeSegment(z, w) {
 		let d = z.x * w.y - z.y * w.x;
 		if (isZero(d))
 			window.context.lineTo(w.x, w.y);
@@ -155,6 +186,26 @@ class Triangle {
 			else if (angW > angZ + Math.PI)
 				angZ += 2 * Math.PI;
 			window.context.arc(c.x, c.y, Complex.dist(z, c), angZ, angW, angZ > angW);
+		}
+	}
+	static strokeSegmentSvg(z, w) {
+		let d = z.x * w.y - z.y * w.x;
+		if (isZero(d))
+			return `L${w.x} ${w.y}`;
+		else {
+			d *= 2;
+			let lenZ = (1 + z.squareLength()) / d;
+			let lenW = (1 + w.squareLength()) / d;
+			let c = Complex.mulImag(lenW, z).sub(Complex.mulImag(lenZ, w));
+			let angZ = Math.atan2(z.y - c.y, z.x - c.x);
+			let angW = Math.atan2(w.y - c.y, w.x - c.x);
+			if (angZ > angW + Math.PI)
+				angW += 2 * Math.PI;
+			else if (angW > angZ + Math.PI)
+				angZ += 2 * Math.PI;
+			// window.context.arc(c.x, c.y, Complex.dist(z, c), angZ, angW, angZ > angW);
+			let r = Complex.dist(z, c);
+			return `A${r} ${r} 0 0 ${angZ > angW ? 0 : 1} ${w.x} ${w.y}`
 		}
 	}
 }
