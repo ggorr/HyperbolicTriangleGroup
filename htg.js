@@ -99,8 +99,8 @@ function build() {
 	tg.fill = document.getElementById("fill").checked;
 
 	transformCanvas();
-	window.context.strokeStyle = "#000000";
-	window.context.fillStyle = "#000000";
+	window.context.strokeStyle = "#303030";
+	window.context.fillStyle = "#303030";
 	let timeCount = 0;
 	interval = setInterval(function () {
 		timeCount++;
