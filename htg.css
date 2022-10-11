@@ -2,15 +2,15 @@ th {
     text-align: center;
 }
 
-div.pqr {
+td {
+    text-align: center;
+}
+
+label.pqr {
     display: inline-block;
     width: 15px;
     text-align: right;
     padding-right: 5px;
-}
-
-input.pqr {
-    width: 120px;
 }
 
 td.cond {
@@ -19,7 +19,11 @@ td.cond {
     text-align: center;
 }
 
-div.maxiter {
+input.pqr {
+    width: 120px;
+}
+
+label.maxiter {
     display: inline-block;
     width: 70px;
     text-align: right;
@@ -30,7 +34,7 @@ input.maxiter {
     width: 65px;
 }
 
-div.time {
+label.time {
     display: inline-block;
     width: 80px;
     text-align: right;
@@ -41,7 +45,7 @@ input.time {
     width: 100px;
 }
 
-div.svg-unit {
+label.svg-unit {
     display: inline-block;
     width: 100px;
     text-align: right;
@@ -70,8 +74,7 @@ button.big {
     width: 120px;
 }
 
-#info {
+td.info {
     text-align: left;
-    /* color: #FF0000;
-       font-weight: normal; */
+    /* font-weight: normal; */
 }
