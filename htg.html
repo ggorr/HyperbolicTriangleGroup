@@ -25,7 +25,7 @@
 	<link rel="stylesheet" href="htg.css">
 	<script type='module'>
 		'use strict';
-		import { loadSample, showTriangle, build, stopBuilding, setInfo } from './htg.js';
+		import { loadSample, showTriangle, build, stopBuilding, saveSvg, setInfo } from './htg.js';
 		document.getElementById('sample1').addEventListener('click', () => loadSample(1));
 		document.getElementById('sample2').addEventListener('click', () => loadSample(2));
 		document.getElementById('sample3').addEventListener('click', () => loadSample(3));
@@ -37,6 +37,7 @@
 		document.getElementById('maxiter').addEventListener('keydown', () => { if (event.keyCode == 13) build(); });
 		document.getElementById('build').addEventListener('click', build);
 		document.getElementById('stop').addEventListener('click', stopBuilding);
+		document.getElementById('save-svg').addEventListener('click', saveSvg);
 	</script>
 </head>
 
@@ -70,9 +71,11 @@
 			<tr>
 				<td class="cond"><sup>*</sup>1/p + 1/q + 1/r &lt 1</td>
 			</tr>
+			<tr></tr>
 			<tr>
 				<th><button class='big' id='showtriangle'>Show Triangle</button></th>
 			</tr>
+			<tr></tr>
 			<tr>
 				<th>
 					<div class="maxiter">max iter:</div><input class="maxiter" id="maxiter" value="46">
@@ -89,7 +92,7 @@
 			</tr>
 			<tr>
 				<th>
-					<div for="iteration" class="time">iteration:</div><input class="time" id="iteration" readonly>
+					<div class="time">iteration:</div><input class="time" id="iteration" readonly>
 				</th>
 			</tr>
 			<tr>
@@ -101,6 +104,18 @@
 				<th>
 					<div class="time">time(sec):</div><input class="time" id="time" readonly>
 				</th>
+			</tr>
+			<tr></tr>
+			<tr>
+				<th>
+					<div class="svg-unit">svg unit(px):</div><input class="svg-unit" id="svg-unit" value="300">
+				</th>
+			</tr>
+			<tr>
+				<th><button class='big' id='save-svg'>Save as SVG</button></th>
+			</tr>
+			<tr>
+				<tr id="download"></tr>
 			</tr>
 			<tr>
 				<td>
