@@ -55,17 +55,17 @@
 			</tr>
 			<tr>
 				<th>
-					<div class="pqr">p:</div><input class="pqr" id="p" value="2" required>
+					<label class="pqr" for="p">p:</label><input class="pqr" id="p" value="2" required>
 				</th>
 			</tr>
 			<tr>
 				<th>
-					<div class="pqr">q:</div><input class="pqr" id="q" value="3">
+					<label class="pqr" for="q">q:</label><input class="pqr" id="q" value="3" required>
 				</th>
 			</tr>
 			<tr>
 				<th>
-					<div class="pqr">r:</div><input class="pqr" id="r" value="7">
+					<label class="pqr" for="r">r:</label><input class="pqr" id="r" value="7" required>
 				</th>
 			</tr>
 			<tr>
@@ -78,11 +78,12 @@
 			<tr></tr>
 			<tr>
 				<th>
-					<div class="maxiter">max iter:</div><input class="maxiter" id="maxiter" value="46">
+					<label class="maxiter" for="maxiter">max iter:</label><input class="maxiter" id="maxiter"
+						value="46">
 				</th>
 			</tr>
 			<tr>
-				<th><input type="checkbox" id="fill" checked> <label for='fill'>Fill Triangle</label></th>
+				<th><input id="fill" type="checkbox" checked> <label for='fill'>Fill Triangle</label></th>
 			</tr>
 			<tr>
 				<th><button class='big' id='build'>Build Image</button></th>
@@ -92,30 +93,31 @@
 			</tr>
 			<tr>
 				<th>
-					<div class="time">iteration:</div><input class="time" id="iteration" readonly>
+					<label class="time" for="iteration">iteration:</label><input class="time" id="iteration" readonly>
 				</th>
 			</tr>
 			<tr>
 				<th>
-					<div class="time">triangles:</div><input class="time" id="triangles" readonly>
+					<label class="time" for="triangles">triangles:</label><input class="time" id="triangles" readonly>
 				</th>
 			</tr>
 			<tr>
 				<th>
-					<div class="time">time(sec):</div><input class="time" id="time" readonly>
+					<label class="time" for="time">time(sec):</label><input class="time" id="time" readonly>
 				</th>
 			</tr>
 			<tr></tr>
 			<tr>
 				<th>
-					<div class="svg-unit">svg unit(px):</div><input class="svg-unit" id="svg-unit" value="300">
+					<label class="svg-unit" for='svg-unit'>svg unit(px):</label><input class="svg-unit" id="svg-unit"
+						value="300">
 				</th>
 			</tr>
 			<tr>
 				<th><button class='big' id='save-svg'>Save as SVG</button></th>
 			</tr>
 			<tr>
-				<tr id="download"></tr>
+				<td id="download"></td>
 			</tr>
 			<tr>
 				<td>
