@@ -153,8 +153,11 @@ function stopBuilding() {
 function saveSvg() {
 	let unit = parseInt(document.getElementById('svg-unit').value);
 	let p = document.getElementById("p").value.trim();
+	if (p === 'Infinity') p = 'Inf';
 	let q = document.getElementById("q").value.trim();
+	if (q === 'Infinity') q = 'Inf';
 	let r = document.getElementById("r").value.trim();
+	if (r === 'Infinity') r = 'Inf';
 	let filename = `${p}${q}${r}.svg`;
 	let svg = `<svg version="1.1" baseProfile="full" width="${unit}" height="${unit}" viewBox="-1 -1 2 2"
  		xmlns="http://www.w3.org/2000/svg" stroke="rgb(26,26,26)" stroke-width="${1 / unit}" 
