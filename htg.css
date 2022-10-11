@@ -41,6 +41,17 @@ input.time {
     width: 100px;
 }
 
+div.svg-unit {
+    display: inline-block;
+    width: 100px;
+    text-align: right;
+    padding-right: 5px;
+}
+
+input.svg-unit {
+    width: 80px;
+}
+
 div.left {
     float: left;
     padding-right: 30px;
