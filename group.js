@@ -19,7 +19,7 @@ class TriangleGroup {
 		this.list.push([]);
 		this.list[0].push(tr);
 		this.triangleCount = 1;
-		tr.draw();
+		tr.stroke();
 	}
 
 	build() {
@@ -69,27 +69,27 @@ class TriangleGroup {
 	}
 	*/
 
-	displayAll() {
+	drawAll() {
 		for (var i = 0; i < this.list.length; i++)
-			this.display(i);
+			this.drawStep(i);
 	}
 
-	display(n) {
+	drawStep(n) {
 		let sublist = this.list[n];
 		if (this.fill) {
 			if ((n & 1) == 0)
 				for (var j = 0; j < sublist.length; j++)
-					this.transformAndFill(Triangle.copy(sublist[j]));
+					this.rotateFill(Triangle.copy(sublist[j]));
 			else
 				for (var j = 0; j < sublist.length; j++)
-					this.transformAndFill(Triangle.conjugate(sublist[j]));
+					this.rotateFill(Triangle.conjugate(sublist[j]));
 		} else {
 			for (var j = 0; j < sublist.length; j++)
-				this.transformAndDraw(Triangle.copy(sublist[j]));
+				this.rotateStroke(Triangle.copy(sublist[j]));
 		}
 	}
 
-	transformAndFill(tr) {
+	rotateFill(tr) {
 		tr.fill();
 		for (var i = 1; i < this.p; i++) {
 			tr.mul(this.rotation);
@@ -97,17 +97,68 @@ class TriangleGroup {
 		}
 	}
 
-	transformAndDraw(tr) {
+	rotateStroke(tr) {
 		let conj = Triangle.conjugate(tr)
-		tr.draw();
-		conj.draw();
+		tr.stroke();
+		conj.stroke();
 		for (var i = 1; i < this.p; i++) {
 			tr.mul(this.rotation);
-			tr.draw();
+			tr.stroke();
 			conj.mul(this.rotation);
-			conj.draw();
+			conj.stroke();
 		}
 	}
+
+	getSvgAll(justIt) {
+		let svg = '';
+		for (var i = 0; i < this.list.length; i++)
+			svg += this.getSvgStep(i, justIt);
+		return svg;
+	}
+
+	getSvgStep(n, justIt) {
+		let svg = '';
+		let sublist = this.list[n];
+		if (justIt) {
+			for (var j = 0; j < sublist.length; j++)
+				svg += sublist[j].strokeSvg();
+			return svg;
+		}
+		if (this.fill) {
+			if ((n & 1) == 0)
+				for (var j = 0; j < sublist.length; j++)
+					svg += this.rotateFillSvg(Triangle.copy(sublist[j]));
+			else
+				for (var j = 0; j < sublist.length; j++)
+					svg += this.rotateFillSvg(Triangle.conjugate(sublist[j]));
+		} else
+			for (var j = 0; j < sublist.length; j++)
+				svg += this.rotateStrokeSvg(Triangle.copy(sublist[j]));
+		return svg;
+	}
+
+	rotateFillSvg(tr) {
+		let svg = tr.fillSvg();
+		for (var i = 1; i < this.p; i++) {
+			tr.mul(this.rotation);
+			svg += tr.fillSvg();
+		}
+		return svg;
+	}
+
+	rotateStrokeSvg(tr) {
+		let conj = Triangle.conjugate(tr)
+		let svg = tr.strokeSvg();
+		svg += conj.strokeSvg();
+		for (var i = 1; i < this.p; i++) {
+			tr.mul(this.rotation);
+			svg += tr.strokeSvg();
+			conj.mul(this.rotation);
+			svg += conj.strokeSvg();
+		}
+		return svg;
+	}
+
 
 	draw_direct() {
 		let startTime = Date.now();
@@ -115,9 +166,9 @@ class TriangleGroup {
 		let tr = Triangle.byAngles(this.p, this.q, this.r);
 		this.list[0].push(tr);
 		if (this.fill)
-			this.transformAndFill(tr);
+			this.rotateFill(tr);
 		else
-			this.transformAndDraw(tr);
+			this.rotateStroke(tr);
 		this.triangleCount++;
 		for (var i = 1; i < this.iter; i++)
 			this.drawStep_direct();
@@ -134,25 +185,25 @@ class TriangleGroup {
 			var next = src[i].getInverseForIteration("AB");
 			if (next != null && !this.listContains(next)) {
 				if (this.fill)
-					this.transformAndFill((n & 1) == 0 ? Triangle.copy(next) : Triangle.conjugate(next));
+					this.rotateFill((n & 1) == 0 ? Triangle.copy(next) : Triangle.conjugate(next));
 				else
-					this.transformAndDraw(Triangle.copy(next));
+					this.rotateStroke(Triangle.copy(next));
 				dst.push(next);
 			}
 			next = src[i].getInverseForIteration("BC");
 			if (next != null && !this.listContains(next)) {
 				if (this.fill)
-					this.transformAndFill((n & 1) == 0 ? Triangle.copy(next) : Triangle.conjugate(next));
+					this.rotateFill((n & 1) == 0 ? Triangle.copy(next) : Triangle.conjugate(next));
 				else
-					this.transformAndDraw(Triangle.copy(next));
+					this.rotateStroke(Triangle.copy(next));
 				dst.push(next);
 			}
 			next = src[i].getInverseForIteration("CA");
 			if (next != null && !this.listContains(next)) {
 				if (this.fill)
-					this.transformAndFill((n & 1) == 0 ? Triangle.copy(next) : Triangle.conjugate(next));
+					this.rotateFill((n & 1) == 0 ? Triangle.copy(next) : Triangle.conjugate(next));
 				else
-					this.transformAndDraw(Triangle.copy(next));
+					this.rotateStroke(Triangle.copy(next));
 				dst.push(next);
 			}
 		}
