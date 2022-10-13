@@ -1,3 +1,21 @@
+.left {
+    float: left;
+    padding-right: 30px;
+}
+
+.right {
+    float: left;
+}
+
+h2.heading {
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+.undisplay {
+    display: none;
+}
+
 th {
     text-align: center;
 }
@@ -35,8 +53,6 @@ input.maxiter {
 }
 
 label.time {
-    display: inline-block;
-    width: 80px;
     text-align: right;
     padding-right: 5px;
 }
@@ -46,28 +62,23 @@ input.time {
 }
 
 label.svg-unit {
-    display: inline-block;
-    width: 100px;
+    width: 110px;
     text-align: right;
     padding-right: 5px;
 }
 
 input.svg-unit {
-    width: 80px;
+    width: 70px;
 }
 
-div.left {
-    float: left;
-    padding-right: 30px;
+label.svg-file {
+    width: 70px;
+    text-align: right;
+    padding-right: 5px;
 }
 
-div.right {
-    float: left;
-}
-
-h2.heading {
-    padding-bottom: 10px;
-    text-align: center;
+input.svg-file {
+    width: 110px;
 }
 
 button.big {
