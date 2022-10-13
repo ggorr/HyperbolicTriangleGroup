@@ -41,7 +41,7 @@ function loadSample(button) {
 let worker;
 let interval;
 let tg;
-let justIt;
+let svgAsShown;
 
 function transformCanvas() {
 	let offset = 10;
@@ -58,10 +58,8 @@ function transformCanvas() {
 function showTriangle() {
 	if (typeof worker !== "undefined")
 		return;
-	justIt = true;
-	let el = document.getElementById('download');
-	while (el.firstChild)
-		el.removeChild(el.firstChild);
+	svgAsShown = true;
+	setSvgFile();
 	setInfo('', 'normal');
 	transformCanvas();
 	window.context.strokeStyle = "#000000";
@@ -82,10 +80,8 @@ function showTriangle() {
 function build() {
 	if (typeof worker !== "undefined")
 		return;
-	justIt = false;
-	let el = document.getElementById('download');
-	while (el.firstChild)
-		el.removeChild(el.firstChild);
+	svgAsShown = false;
+	setSvgFile();
 	setInfo('', 'normal');
 	let p = Number(document.getElementById("p").value);
 	let q = Number(document.getElementById("q").value);
@@ -108,7 +104,7 @@ function build() {
 	}, 100);
 	drawBigCircle();
 
-	worker = new Worker("worker.js", { type: 'module' });
+	worker = new Worker("./worker.js", { type: 'module' });
 
 	/////////////////////////////////////////////////////////////////////
 	// 단계별로 그리려면 다음 코드를 적용한다. worker.js도 변경해야 한다.
@@ -150,35 +146,34 @@ function stopBuilding() {
 	worker = undefined;
 }
 
-function saveSvg() {
-	let unit = parseInt(document.getElementById('svg-unit').value);
+function setSvgFile() {
 	let p = document.getElementById("p").value.trim();
 	if (p === 'Infinity') p = 'Inf';
 	let q = document.getElementById("q").value.trim();
 	if (q === 'Infinity') q = 'Inf';
 	let r = document.getElementById("r").value.trim();
 	if (r === 'Infinity') r = 'Inf';
-	let filename = `${p}${q}${r}.svg`;
+	document.getElementById('svg-file').value = `${p}${q}${r}.svg`;
+}
+
+function saveSvg() {
+	let unit = parseInt(document.getElementById('svg-unit').value);
 	let svg = `<svg version="1.1" baseProfile="full" width="${unit}" height="${unit}" viewBox="-1 -1 2 2"
  		xmlns="http://www.w3.org/2000/svg" stroke="rgb(26,26,26)" stroke-width="${1 / unit}" 
-		fill="${tg.fill & !justIt ? "rgb(192,192,192)" : "transparent"}">` +
-		tg.getSvgAll(justIt) + '<circle cx="0" cy="0" r="1" fill="transparent"/></svg>';
-	// stroke="${tg.fill & !justIt ? "rgb(26,26,26)" : "black"}"
+		fill="${tg.fill & !svgAsShown ? "rgb(192,192,192)" : "transparent"}">` +
+		tg.getSvgAll(svgAsShown) + '<circle cx="0" cy="0" r="1" fill="transparent"/></svg>';
+	// stroke="${tg.fill & !svgAsShown ? "rgb(26,26,26)" : "black"}"
 	let blob = new Blob([svg], { type: 'image/svg+xml' });
 	let link = document.createElement("a");
-	link.download = filename;
-	link.innerHTML = "Download " + filename;
+	link.download = document.getElementById('svg-file').value;
 	link.href = window.URL.createObjectURL(blob);
-	let el = document.getElementById('download');
-	while (el.firstChild)
-		el.removeChild(el.firstChild);
-	el.appendChild(link);
+	link.click();
 }
 
 function build_direct() {
 	transformCanvas();
-	window.context.strokeStyle = "#000000";
-	window.context.fillStyle = "#000000";
+	window.context.strokeStyle = "#303030";
+	window.context.fillStyle = "#303030";
 	let tg = new TriangleGroup(
 		Number(document.getElementById("p").value),
 		Number(document.getElementById("q").value),
