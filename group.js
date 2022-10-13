@@ -109,17 +109,17 @@ class TriangleGroup {
 		}
 	}
 
-	getSvgAll(justIt) {
+	getSvgAll(svgAsShown) {
 		let svg = '';
 		for (var i = 0; i < this.list.length; i++)
-			svg += this.getSvgStep(i, justIt);
+			svg += this.getSvgStep(i, svgAsShown);
 		return svg;
 	}
 
-	getSvgStep(n, justIt) {
+	getSvgStep(n, svgAsShown) {
 		let svg = '';
 		let sublist = this.list[n];
-		if (justIt) {
+		if (svgAsShown) {
 			for (var j = 0; j < sublist.length; j++)
 				svg += sublist[j].strokeSvg();
 			return svg;
