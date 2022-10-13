@@ -159,10 +159,10 @@ function setSvgFile() {
 function saveSvg() {
 	let unit = parseInt(document.getElementById('svg-unit').value);
 	let svg = `<svg version="1.1" baseProfile="full" width="${unit}" height="${unit}" viewBox="-1 -1 2 2"
- 		xmlns="http://www.w3.org/2000/svg" stroke="rgb(26,26,26)" stroke-width="${1 / unit}" 
-		fill="${tg.fill & !svgAsShown ? "rgb(192,192,192)" : "transparent"}">` +
+ 		xmlns="http://www.w3.org/2000/svg" stroke="rgb(64,64,64)" stroke-width="${1 / unit}" 
+		fill="${tg.fill & !svgAsShown ? "rgb(64,64,64)" : "transparent"}">` +
 		tg.getSvgAll(svgAsShown) + '<circle cx="0" cy="0" r="1" fill="transparent"/></svg>';
-	// stroke="${tg.fill & !svgAsShown ? "rgb(26,26,26)" : "black"}"
+	// stroke="${tg.fill & !svgAsShown ? "rgb(64,64,64)" : "black"}"
 	let blob = new Blob([svg], { type: 'image/svg+xml' });
 	let link = document.createElement("a");
 	link.download = document.getElementById('svg-file').value;
