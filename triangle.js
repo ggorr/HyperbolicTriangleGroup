@@ -2,6 +2,10 @@
 
 import { isZero, Complex } from './complex.js';
 
+function trunc(x) {
+	return Math.round(x * 10000) / 10000;
+}
+
 class Triangle {
 	constructor(A, B, C, axis) {
 		this.A = A;
@@ -134,19 +138,19 @@ class Triangle {
 	strokeSvg() {
 		let path;
 		if (this.axis == "AB") {
-			path = `<path d='M${this.B.x} ${this.B.y}`
+			path = `<path d='M${trunc(this.B.x)} ${trunc(this.B.y)}`
 			path += Triangle.strokeSegmentSvg(this.B, this.C);
 			path += Triangle.strokeSegmentSvg(this.C, this.A);
 		} else if (this.axis == "BC") {
-			path = `<path d='M${this.C.x} ${this.C.y}`
+			path = `<path d='M${trunc(this.C.x)} ${trunc(this.C.y)}`
 			path += Triangle.strokeSegmentSvg(this.C, this.A);
 			path += Triangle.strokeSegmentSvg(this.A, this.B);
 		} else if (this.axis == "CA") {
-			path = `<path d='M${this.A.x} ${this.A.y}`
+			path = `<path d='M${trunc(this.A.x)} ${trunc(this.A.y)}`
 			path += Triangle.strokeSegmentSvg(this.A, this.B);
 			path += Triangle.strokeSegmentSvg(this.B, this.C);
 		} else {
-			path = `<path d='M${this.A.x} ${this.A.y}`
+			path = `<path d='M${trunc(this.A.x)} ${trunc(this.A.y)}`
 			path += Triangle.strokeSegmentSvg(this.A, this.B);
 			path += Triangle.strokeSegmentSvg(this.B, this.C);
 			path += Triangle.strokeSegmentSvg(this.C, this.A);
@@ -155,7 +159,7 @@ class Triangle {
 	}
 
 	fillSvg() {
-		let path = `<path d='M${this.A.x} ${this.A.y}`
+		let path = `<path d='M${trunc(this.A.x)} ${trunc(this.A.y)}`
 		path += Triangle.strokeSegmentSvg(this.A, this.B);
 		path += Triangle.strokeSegmentSvg(this.B, this.C);
 		path += Triangle.strokeSegmentSvg(this.C, this.A);
@@ -191,7 +195,7 @@ class Triangle {
 	static strokeSegmentSvg(z, w) {
 		let d = z.x * w.y - z.y * w.x;
 		if (isZero(d))
-			return `L${w.x} ${w.y}`;
+			return `L${trunc(w.x)} ${trunc(w.y)}`;
 		else {
 			d *= 2;
 			let lenZ = (1 + z.squareLength()) / d;
@@ -204,8 +208,8 @@ class Triangle {
 			else if (angW > angZ + Math.PI)
 				angZ += 2 * Math.PI;
 			// window.context.arc(c.x, c.y, Complex.dist(z, c), angZ, angW, angZ > angW);
-			let r = Complex.dist(z, c);
-			return `A${r} ${r} 0 0 ${angZ > angW ? 0 : 1} ${w.x} ${w.y}`
+			let r = trunc(Complex.dist(z, c));
+			return `A${r} ${r} 0 0 ${angZ > angW ? 0 : 1} ${trunc(w.x)} ${trunc(w.y)}`
 		}
 	}
 }
