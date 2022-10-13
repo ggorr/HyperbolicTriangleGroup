@@ -37,6 +37,8 @@
 		document.getElementById('maxiter').addEventListener('keydown', () => { if (event.keyCode == 13) build(); });
 		document.getElementById('build').addEventListener('click', build);
 		document.getElementById('stop').addEventListener('click', stopBuilding);
+		document.getElementById('svg-unit').addEventListener('keydown', () => { if (event.keyCode == 13) saveSvg(); });
+		document.getElementById('svg-file').addEventListener('keydown', () => { if (event.keyCode == 13) saveSvg(); });
 		document.getElementById('save-svg').addEventListener('click', saveSvg);
 	</script>
 </head>
@@ -114,15 +116,16 @@
 				</th>
 			</tr>
 			<tr>
+				<th>
+					<label class='svg-file' for='svg-file'>svg file:</label><input class='svg-file' id='svg-file'>
+				</th>
+			</tr>
+			<tr>
 				<th><button class='big' id='save-svg'>Save as SVG</button></th>
 			</tr>
+			<tr></tr>
 			<tr>
-				<td id="download"></td>
-			</tr>
-			<tr>
-				<td>
-					<p id="info">info: </p>
-				</td>
+				<td class="info" id="info">info:</td>
 			</tr>
 			<!--
 			<tr>
