@@ -102,7 +102,6 @@ function build() {
 		timeCount++;
 		document.getElementById("time").value = (timeCount / 10).toFixed(1);
 	}, 100);
-	drawBigCircle();
 
 	worker = new Worker("./worker.js", { type: 'module' });
 
@@ -117,6 +116,7 @@ function build() {
 		document.getElementById("triangles").value = "2p x " + tg.triangleCount;
 		document.getElementById("iteration").value = iterCount;
 		if (iterCount >= tg.iter) {
+			drawBigCircle();
 			stopBuilding();
 		}
 	}
@@ -158,11 +158,16 @@ function setSvgFile() {
 
 function saveSvg() {
 	let unit = parseInt(document.getElementById('svg-unit').value);
-	let svg = `<svg version="1.1" baseProfile="full" width="${unit}" height="${unit}" viewBox="-1 -1 2 2"
- 		xmlns="http://www.w3.org/2000/svg" stroke="rgb(64,64,64)" stroke-width="${1 / unit}" 
-		fill="${tg.fill & !svgAsShown ? "rgb(64,64,64)" : "transparent"}">` +
-		tg.getSvgAll(svgAsShown) + '<circle cx="0" cy="0" r="1" fill="transparent"/></svg>';
-	// stroke="${tg.fill & !svgAsShown ? "rgb(64,64,64)" : "black"}"
+	let svg = `<svg version="1.1" 
+	baseProfile="full" 
+	width="900" height="900" 
+	viewBox="-1 -1 2 2"
+	xmlns="http://www.w3.org/2000/svg" 
+	stroke="rgb(64,64,64)" 
+	stroke-width="${1 / unit}" 
+	fill="${tg.fill & !svgAsShown ? 'rgb(64,64,64)' : 'transparent'}">
+	${tg.getSvgAll(svgAsShown)}	
+	<circle cx="0" cy="0" r="1" fill="transparent"/></svg>`;
 	let blob = new Blob([svg], { type: 'image/svg+xml' });
 	let link = document.createElement("a");
 	link.download = document.getElementById('svg-file').value;
