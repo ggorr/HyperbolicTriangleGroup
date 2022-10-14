@@ -3,7 +3,9 @@
 import { isZero, Complex } from './complex.js';
 
 function trunc(x) {
-	return Math.round(x * 100000) / 100000;
+	// return Math.round(x * 100000) / 100000;
+	let str = (Math.round(x * 100000) / 100000).toString();
+	return x > 0 ? (str.length > 2 && x < 1 ? str.slice(1) : str) : x < 0 ? (str.length > 3 && x > -1 ? '-' + str.slice(2) : str) : str;
 }
 
 class Triangle {
