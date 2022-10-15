@@ -42,17 +42,26 @@ let worker;
 let interval;
 let tg;
 let svgAsShown;
+let offset = 10;
+
+function setUnit() {
+	let unit = Math.floor(Math.min(window.innerWidth, window.innerHeight) / 2) - 2 * offset;
+	document.getElementById('unit').value = unit;
+	return unit;
+}
 
 function transformCanvas() {
-	let offset = 10;
-	let radius = Math.min(window.innerWidth, window.innerHeight) / 2 - 2 * offset;
+	let unit = parseFloat(document.getElementById('unit').value);
+	if (!unit) {
+		unit = setUnit();
+	}
 	let canvas = document.getElementById("canvas");
-	canvas.height = canvas.width = 2 * (radius + offset);
+	canvas.height = canvas.width = 2 * (unit + offset);
 	window.context = canvas.getContext('2d');
-	let cenX = radius + offset;
-	let cenY = radius + offset;
-	window.context.setTransform(radius, 0, 0, -radius, cenX, cenY);
-	window.context.lineWidth = 1 / radius;
+	let cenX = unit + offset;
+	let cenY = unit + offset;
+	window.context.setTransform(unit, 0, 0, -unit, cenX, cenY);
+	window.context.lineWidth = 1 / unit;
 }
 
 function showTriangle() {
@@ -157,14 +166,14 @@ function setSvgFile() {
 }
 
 function saveSvg() {
-	let unit = parseInt(document.getElementById('svg-unit').value);
+	let svgUnit = parseInt(document.getElementById('svg-unit').value);
 	let svg = `<svg version="1.1" 
 	baseProfile="full" 
-	width="900" height="900" 
+	width="${2 * svgUnit}" height="${2 * svgUnit}" 
 	viewBox="-1 -1 2 2"
 	xmlns="http://www.w3.org/2000/svg" 
 	stroke="rgb(64,64,64)" 
-	stroke-width="${1 / unit}" 
+	stroke-width="${1 / (2 * svgUnit)}" 
 	fill="${tg.fill & !svgAsShown ? 'rgb(64,64,64)' : 'transparent'}">
 	${tg.getSvgAll(svgAsShown)}	
 	<circle cx="0" cy="0" r="1" fill="transparent"/></svg>`;
@@ -195,4 +204,4 @@ function drawBigCircle() {
 	window.context.stroke();
 }
 
-export { loadSample, showTriangle, build, build_direct, stopBuilding, saveSvg, setInfo };
+export { loadSample, setUnit, showTriangle, build, build_direct, stopBuilding, saveSvg, setInfo };
