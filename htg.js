@@ -185,10 +185,13 @@ function saveSvg() {
 }
 
 function build_direct() {
+	svgAsShown = false;
+	setSvgFile();
+	setInfo('', 'normal');
 	transformCanvas();
 	window.context.strokeStyle = "#303030";
 	window.context.fillStyle = "#303030";
-	let tg = new TriangleGroup(
+	tg = new TriangleGroup(
 		Number(document.getElementById("p").value),
 		Number(document.getElementById("q").value),
 		Number(document.getElementById("r").value));
