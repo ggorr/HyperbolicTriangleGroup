@@ -172,11 +172,11 @@ function saveSvg() {
 	width="${2 * svgUnit}" height="${2 * svgUnit}" 
 	viewBox="-1 -1 2 2"
 	xmlns="http://www.w3.org/2000/svg" 
-	stroke="rgb(64,64,64)" 
-	stroke-width="${1 / (2 * svgUnit)}" 
+	stroke="${tg.fill & !svgAsShown ? 'transparent' : 'rgb(64,64,64)'}" 
+	stroke-width="${1 / svgUnit}" 
 	fill="${tg.fill & !svgAsShown ? 'rgb(64,64,64)' : 'transparent'}">
 	${tg.getSvgAll(svgAsShown)}	
-	<circle cx="0" cy="0" r="1" fill="transparent"/></svg>`;
+	<circle cx="0" cy="0" r="1" stroke="rgb(32,32,32)" fill="transparent"/></svg>`;
 	let blob = new Blob([svg], { type: 'image/svg+xml' });
 	let link = document.createElement("a");
 	link.download = document.getElementById('svg-file').value;
