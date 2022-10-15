@@ -19,7 +19,7 @@ function loadSample(button) {
 		document.getElementById("p").value = "2";
 		document.getElementById("q").value = "3";
 		document.getElementById("r").value = "7";
-		document.getElementById("maxiter").value = "46";
+		document.getElementById("maxiter").value = "44";
 	} else if (button == 2) {
 		document.getElementById("p").value = "2";
 		document.getElementById("q").value = "3";
@@ -34,7 +34,7 @@ function loadSample(button) {
 		document.getElementById("p").value = "4";
 		document.getElementById("q").value = "4";
 		document.getElementById("r").value = "4";
-		document.getElementById("maxiter").value = "19";
+		document.getElementById("maxiter").value = "15";
 	}
 }
 
@@ -167,11 +167,11 @@ function setSvgFile() {
 
 function saveSvg() {
 	let svgUnit = parseInt(document.getElementById('svg-unit').value);
-	let svg = `<svg version="1.1" 
+	let svg = `<svg version="1.1" xmlns="http://www.w3.org/2000/svg" 
 	baseProfile="full" 
+	transform="matrix(1 0 0 -1 0 0)"
 	width="${2 * svgUnit}" height="${2 * svgUnit}" 
 	viewBox="-1 -1 2 2"
-	xmlns="http://www.w3.org/2000/svg" 
 	stroke="${tg.fill & !svgAsShown ? 'transparent' : 'rgb(64,64,64)'}" 
 	stroke-width="${1 / svgUnit}" 
 	fill="${tg.fill & !svgAsShown ? 'rgb(64,64,64)' : 'transparent'}">
