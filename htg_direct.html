@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="ko-kr" dir="ltr">
+<html lang="ko-KR" dir="ltr">
 
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Hyperbolic Triangle Group</title>
 	<link rel="apple-touch-icon" sizes="57x57" href="icons/apple-icon-57x57.png">
 	<link rel="apple-touch-icon" sizes="60x60" href="icons/apple-icon-60x60.png">
 	<link rel="apple-touch-icon" sizes="72x72" href="icons/apple-icon-72x72.png">
@@ -21,50 +22,10 @@
 	<meta name="msapplication-TileColor" content="#ffffff">
 	<meta name="msapplication-TileImage" content="icons/ms-icon-144x144.png">
 	<meta name="theme-color" content="#ffffff">
-	<title>Hyperbolic Triangle Group</title>
-
-	<style>
-		th {
-			text-align: center;
-		}
-
-		div.pqr {
-			display: inline-block;
-			width: 15px;
-			text-align: right;
-			padding-right: 5px;
-		}
-
-		input.pqr {
-			width: 120px;
-		}
-
-		div.maxiter {
-			display: inline-block;
-			width: 70px;
-			text-align: right;
-			padding-right: 5px;
-		}
-
-		input.maxiter {
-			width: 65px;
-		}
-
-		div.time {
-			display: inline-block;
-			width: 80px;
-			text-align: right;
-			padding-right: 5px;
-		}
-
-		input.time {
-			width: 100px;
-		}
-	</style>
-
+	<link rel="stylesheet" href="htg.css">
 	<script type='module'>
 		'use strict';
-		import { loadSample, showTriangle, build_direct, stopBuilding, setInfo } from './htg.js';
+		import { loadSample, setUnit, showTriangle, build_direct, stopBuilding, saveSvg, setInfo } from './htg.js';
 		document.getElementById('sample1').addEventListener('click', () => loadSample(1));
 		document.getElementById('sample2').addEventListener('click', () => loadSample(2));
 		document.getElementById('sample3').addEventListener('click', () => loadSample(3));
@@ -72,71 +33,112 @@
 		document.getElementById('p').addEventListener('keydown', () => { if (event.keyCode == 13) showTriangle(); });
 		document.getElementById('q').addEventListener('keydown', () => { if (event.keyCode == 13) showTriangle(); });
 		document.getElementById('r').addEventListener('keydown', () => { if (event.keyCode == 13) showTriangle(); });
+		document.getElementById('unit').addEventListener('keydown', () => { if (event.keyCode == 13) showTriangle(); });
+		document.getElementById('auto-unit').addEventListener('click', setUnit);
 		document.getElementById('showtriangle').addEventListener('click', showTriangle);
-		document.getElementById('maxiter').addEventListener('keydown', () => { if (event.keyCode == 13) build_direct(); });
+		document.getElementById('maxiter').addEventListener('keydown', () => { if (event.keyCode == 13) build(); });
 		document.getElementById('build').addEventListener('click', build_direct);
+		// document.getElementById('stop').addEventListener('click', stopBuilding);
+		document.getElementById('svg-unit').addEventListener('keydown', () => { if (event.keyCode == 13) saveSvg(); });
+		document.getElementById('svg-file').addEventListener('keydown', () => { if (event.keyCode == 13) saveSvg(); });
+		document.getElementById('save-svg').addEventListener('click', saveSvg);
 	</script>
 </head>
 
 <body>
-	<div style="float: left;padding-right: 30px;">
-		<h2 style="padding-bottom: 10px;text-align: center;">Hyperbolic<br>Triangle Group<br>Draw at once</h2>
+	<div class='left'>
+		<h2 class='heading'>Hyperbolic<br>Triangle Group</h2>
 		<table>
 			<tr>
 				<th>
-					<button id="sample1">1</button>
-					<button id="sample2">2</button>
-					<button id="sample3">3</button>
-					<button id="sample4">4</button>
+					<button id='sample1'>1</button>
+					<button id='sample2'>2</button>
+					<button id='sample3'>3</button>
+					<button id='sample4'>4</button>
 				</th>
 			</tr>
 			<tr>
 				<th>
-					<div class="pqr">p:</div><input class="pqr" type="text" id="p" value="2">
+					<label class="pqr" for="p">p:</label><input class="pqr" id="p" value="2" required>
 				</th>
 			</tr>
 			<tr>
 				<th>
-					<div class="pqr">q:</div><input class="pqr" type="text" id="q" value="3">
+					<label class="pqr" for="q">q:</label><input class="pqr" id="q" value="3" required>
 				</th>
 			</tr>
 			<tr>
 				<th>
-					<div class="pqr">r:</div><input class="pqr" type="text" id="r" value="7">
+					<label class="pqr" for="r">r:</label><input class="pqr" id="r" value="7" required>
 				</th>
 			</tr>
 			<tr>
-				<th><button style="width: 120px;" id='showtriangle'>Show Triangle</button></th>
+				<td class="cond"><sup>*</sup>1/p + 1/q + 1/r &lt 1</td>
 			</tr>
+			<tr></tr>
 			<tr>
 				<th>
-					<div class="maxiter">max iter:</div><input class="maxiter" id="maxiter" value="46">
+					<label class='unit' for='unit'>unit(px):</label><input class='unit' id='unit'></input><button
+						class='unit' id='auto-unit'>auto</button>
 				</th>
 			</tr>
+			<tr></tr>
 			<tr>
-				<th><input type="checkbox" id="fill" checked>Fill Triangle</th>
+				<th><button class='big' id='showtriangle'>Show Triangle</button></th>
 			</tr>
-			<tr>
-				<th><button style="width: 120px;" id="build">Build Image</button></th>
-			</tr>
+			<tr></tr>
 			<tr>
 				<th>
-					<div class="time">time(sec):</div><input class="time" type="text" id="time" size="22" readonly>
+					<label class="maxiter" for="maxiter">max iter:</label><input class="maxiter" id="maxiter"
+						value="46">
 				</th>
 			</tr>
 			<tr>
-				<th>
-					<div class="time">triangles:</div><input class="time" type="text" id="triangles" size="22" readonly>
-				</th>
+				<th><input id="fill" type="checkbox" checked> <label for='fill'>Fill Triangle</label></th>
+			</tr>
+			<tr>
+				<th><button class='big' id='build'>Build Image</button></th>
+			</tr>
+			<!-- <tr>
+				<th><button class='big' id="stop">Stop Building</button></th>
+			</tr> -->
+			<tr>
+				<td>
+					<label class="time" for="iteration">iteration:</label><input class="time" id="iteration" readonly>
+				</td>
 			</tr>
 			<tr>
 				<td>
-					<p id="info">info: </p>
+					<label class="time" for="triangles">triangles:</label><input class="time" id="triangles" readonly>
 				</td>
+			</tr>
+			<tr>
+				<td>
+					<label class="time" for="time">time(sec):</label><input class="time" id="time" readonly>
+				</td>
+			</tr>
+			<tr></tr>
+			<tr>
+				<th>
+					<label class="svg-unit" for='svg-unit'>svg unit(px):</label><input class="svg-unit" id="svg-unit"
+						value="450">
+				</th>
+			</tr>
+			<tr>
+				<th>
+					<label class='svg-file' for='svg-file'>svg file:</label><input class='svg-file' id='svg-file'>
+				</th>
+			</tr>
+			<tr>
+				<th><button class='big' id='save-svg'>Save as SVG</button></th>
+			</tr>
+			<tr></tr>
+			<tr>
+				<td class="info" id="info">info:</td>
 			</tr>
 			<!--
 			<tr>
-				<th><button style="width: 120px;" onclick="setInfo('')">Clear Info</button></th>
+				<th><button class="big" onclick="setInfo('')">Clear Info</button></th>
 			</tr>
 			-->
 			<tr>
@@ -144,7 +146,7 @@
 			</tr>
 		</table>
 	</div>
-	<div style="float: left;">
+	<div class='right'>
 		<canvas id="canvas"></canvas>
 	</div>
 </body>
