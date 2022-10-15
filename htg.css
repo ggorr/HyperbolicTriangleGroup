@@ -12,14 +12,7 @@ h2.heading {
     text-align: center;
 }
 
-.undisplay {
-    display: none;
-}
-
-th {
-    text-align: center;
-}
-
+th,
 td {
     text-align: center;
 }
@@ -31,38 +24,56 @@ label.pqr {
     padding-right: 5px;
 }
 
+input.pqr {
+    width: 120px;
+}
+
 td.cond {
     font-size: 9pt;
     color: #FF0000;
     text-align: center;
 }
 
-input.pqr {
-    width: 120px;
-}
-
-label.maxiter {
+label.unit {
     display: inline-block;
     width: 70px;
     text-align: right;
     padding-right: 5px;
 }
+input.unit {
+    width: 55px;
+    margin-right: 5px;
+}
+
+button.unit {
+    width:40px
+}
+
+label.maxiter {
+    text-align: right;
+    padding-right: 5px;
+    display: inline-block;
+    width: 100px;
+}
 
 input.maxiter {
-    width: 65px;
+    width: 70px;
 }
 
 label.time {
     text-align: right;
     padding-right: 5px;
+    display: inline-block;
+    width: 75px;
 }
 
 input.time {
-    width: 100px;
+    width: 90px;
 }
 
 label.svg-unit {
-    width: 110px;
+    display: inline-block;
+    width: 100px;
     text-align: right;
     padding-right: 5px;
 }
@@ -72,13 +83,14 @@ input.svg-unit {
 }
 
 label.svg-file {
-    width: 70px;
+    display: inline-block;
+    width: 65px;
     text-align: right;
     padding-right: 5px;
 }
 
 input.svg-file {
-    width: 110px;
+    width: 105px;
 }
 
 button.big {
@@ -86,6 +98,8 @@ button.big {
 }
 
 td.info {
+    display: inline-block;
+    width: 175px;
     text-align: left;
     /* font-weight: normal; */
 }
