@@ -25,7 +25,7 @@
 	<link rel="stylesheet" href="htg.css">
 	<script type='module'>
 		'use strict';
-		import { loadSample, showTriangle, build, stopBuilding, saveSvg, setInfo } from './htg.js';
+		import { loadSample, setUnit, showTriangle, build, stopBuilding, saveSvg, setInfo } from './htg.js';
 		document.getElementById('sample1').addEventListener('click', () => loadSample(1));
 		document.getElementById('sample2').addEventListener('click', () => loadSample(2));
 		document.getElementById('sample3').addEventListener('click', () => loadSample(3));
@@ -33,6 +33,8 @@
 		document.getElementById('p').addEventListener('keydown', () => { if (event.keyCode == 13) showTriangle(); });
 		document.getElementById('q').addEventListener('keydown', () => { if (event.keyCode == 13) showTriangle(); });
 		document.getElementById('r').addEventListener('keydown', () => { if (event.keyCode == 13) showTriangle(); });
+		document.getElementById('unit').addEventListener('keydown', () => { if (event.keyCode == 13) showTriangle(); });
+		document.getElementById('auto-unit').addEventListener('click', setUnit);
 		document.getElementById('showtriangle').addEventListener('click', showTriangle);
 		document.getElementById('maxiter').addEventListener('keydown', () => { if (event.keyCode == 13) build(); });
 		document.getElementById('build').addEventListener('click', build);
@@ -75,6 +77,13 @@
 			</tr>
 			<tr></tr>
 			<tr>
+				<th>
+					<label class='unit' for='unit'>unit(px):</label><input class='unit' id='unit'></input><button
+						class='unit' id='auto-unit'>auto</button>
+				</th>
+			</tr>
+			<tr></tr>
+			<tr>
 				<th><button class='big' id='showtriangle'>Show Triangle</button></th>
 			</tr>
 			<tr></tr>
@@ -112,7 +121,7 @@
 			<tr>
 				<th>
 					<label class="svg-unit" for='svg-unit'>svg unit(px):</label><input class="svg-unit" id="svg-unit"
-						value="900">
+						value="450">
 				</th>
 			</tr>
 			<tr>
