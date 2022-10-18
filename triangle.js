@@ -106,24 +106,10 @@ class Triangle {
 
 	stroke() {
 		window.context.beginPath();
-		if (this.axis == "AB") {
-			window.context.moveTo(this.B.x, this.B.y);
-			Triangle.strokeSegment(this.B, this.C);
-			Triangle.strokeSegment(this.C, this.A);
-		} else if (this.axis == "BC") {
-			window.context.moveTo(this.C.x, this.C.y);
-			Triangle.strokeSegment(this.C, this.A);
-			Triangle.strokeSegment(this.A, this.B);
-		} else if (this.axis == "CA") {
-			window.context.moveTo(this.A.x, this.A.y);
-			Triangle.strokeSegment(this.A, this.B);
-			Triangle.strokeSegment(this.B, this.C);
-		} else {
-			window.context.moveTo(this.A.x, this.A.y);
-			Triangle.strokeSegment(this.A, this.B);
-			Triangle.strokeSegment(this.B, this.C);
-			Triangle.strokeSegment(this.C, this.A);
-		}
+		window.context.moveTo(this.A.x, this.A.y);
+		Triangle.strokeSegment(this.A, this.B);
+		Triangle.strokeSegment(this.B, this.C);
+		Triangle.strokeSegment(this.C, this.A);
 		window.context.stroke();
 	}
 
@@ -136,27 +122,12 @@ class Triangle {
 		// window.context.fillStyle = "#000000";
 		window.context.fill();
 	}
-
+	
 	strokeSvg() {
-		let path;
-		if (this.axis == "AB") {
-			path = `<path d='M${trunc(this.B.x)} ${trunc(this.B.y)}`
-			path += Triangle.strokeSegmentSvg(this.B, this.C);
-			path += Triangle.strokeSegmentSvg(this.C, this.A);
-		} else if (this.axis == "BC") {
-			path = `<path d='M${trunc(this.C.x)} ${trunc(this.C.y)}`
-			path += Triangle.strokeSegmentSvg(this.C, this.A);
-			path += Triangle.strokeSegmentSvg(this.A, this.B);
-		} else if (this.axis == "CA") {
-			path = `<path d='M${trunc(this.A.x)} ${trunc(this.A.y)}`
-			path += Triangle.strokeSegmentSvg(this.A, this.B);
-			path += Triangle.strokeSegmentSvg(this.B, this.C);
-		} else {
-			path = `<path d='M${trunc(this.A.x)} ${trunc(this.A.y)}`
-			path += Triangle.strokeSegmentSvg(this.A, this.B);
-			path += Triangle.strokeSegmentSvg(this.B, this.C);
-			path += Triangle.strokeSegmentSvg(this.C, this.A);
-		}
+		let path = `<path d='M${trunc(this.A.x)} ${trunc(this.A.y)}`
+		path += Triangle.strokeSegmentSvg(this.A, this.B);
+		path += Triangle.strokeSegmentSvg(this.B, this.C);
+		path += Triangle.strokeSegmentSvg(this.C, this.A);
 		return path + `'/>`;
 	}
 
@@ -167,7 +138,7 @@ class Triangle {
 		path += Triangle.strokeSegmentSvg(this.C, this.A);
 		return path + `'/>`;
 	}
-	
+
 	static circleInversion(a, b, z) {
 		let d = 2 * (a.x * b.y - a.y * b.x);
 		let lenA = (1 + a.squareLength()) / d;
