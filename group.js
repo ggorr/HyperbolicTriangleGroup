@@ -84,8 +84,12 @@ class TriangleGroup {
 				for (var j = 0; j < sublist.length; j++)
 					this.rotateFill(Triangle.conjugate(sublist[j]));
 		} else {
-			for (var j = 0; j < sublist.length; j++)
-				this.rotateStroke(Triangle.copy(sublist[j]));
+			if ((n & 1) == 0)
+				for (var j = 0; j < sublist.length; j++)
+					this.rotateStroke(Triangle.copy(sublist[j]));
+			else
+				for (var j = 0; j < sublist.length; j++)
+					this.rotateStroke(Triangle.conjugate(sublist[j]));
 		}
 	}
 
@@ -98,14 +102,10 @@ class TriangleGroup {
 	}
 
 	rotateStroke(tr) {
-		let conj = Triangle.conjugate(tr)
 		tr.stroke();
-		conj.stroke();
 		for (var i = 1; i < this.p; i++) {
 			tr.mul(this.rotation);
 			tr.stroke();
-			conj.mul(this.rotation);
-			conj.stroke();
 		}
 	}
 
@@ -127,38 +127,20 @@ class TriangleGroup {
 		if (this.fill) {
 			if ((n & 1) == 0)
 				for (var j = 0; j < sublist.length; j++)
-					svg += this.rotateFillSvg(Triangle.copy(sublist[j]));
+					svg += Triangle.copy(sublist[j]).fillSvg();
 			else
 				for (var j = 0; j < sublist.length; j++)
-					svg += this.rotateFillSvg(Triangle.conjugate(sublist[j]));
-		} else
-			for (var j = 0; j < sublist.length; j++)
-				svg += this.rotateStrokeSvg(Triangle.copy(sublist[j]));
-		return svg;
-	}
-
-	rotateFillSvg(tr) {
-		let svg = tr.fillSvg();
-		for (var i = 1; i < this.p; i++) {
-			tr.mul(this.rotation);
-			svg += tr.fillSvg();
+					svg += Triangle.conjugate(sublist[j]).fillSvg();
+		} else {
+			if ((n & 1) == 0)
+				for (var j = 0; j < sublist.length; j++)
+					svg += Triangle.copy(sublist[j]).strokeSvg();
+			else
+				for (var j = 0; j < sublist.length; j++)
+					svg += Triangle.conjugate(sublist[j]).strokeSvg();
 		}
 		return svg;
 	}
-
-	rotateStrokeSvg(tr) {
-		let conj = Triangle.conjugate(tr)
-		let svg = tr.strokeSvg();
-		svg += conj.strokeSvg();
-		for (var i = 1; i < this.p; i++) {
-			tr.mul(this.rotation);
-			svg += tr.strokeSvg();
-			conj.mul(this.rotation);
-			svg += conj.strokeSvg();
-		}
-		return svg;
-	}
-
 
 	draw_direct() {
 		let startTime = Date.now();
