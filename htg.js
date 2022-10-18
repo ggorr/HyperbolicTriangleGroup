@@ -26,10 +26,10 @@ function loadSample(button) {
 		document.getElementById("r").value = "Infinity";
 		document.getElementById("maxiter").value = "30";
 	} else if (button == 3) {
-		document.getElementById("p").value = "2";
+		document.getElementById("p").value = "4";
 		document.getElementById("q").value = "Infinity";
 		document.getElementById("r").value = "Infinity";
-		document.getElementById("maxiter").value = "20";
+		document.getElementById("maxiter").value = "16";
 	} else {
 		document.getElementById("p").value = "4";
 		document.getElementById("q").value = "4";
@@ -71,7 +71,7 @@ function showTriangle() {
 	setSvgFile();
 	setInfo('', 'normal');
 	transformCanvas();
-	window.context.strokeStyle = "#000000";
+	window.context.strokeStyle = "#448";
 	let p = Number(document.getElementById("p").value);
 	let q = Number(document.getElementById("q").value);
 	let r = Number(document.getElementById("r").value);
@@ -104,8 +104,8 @@ function build() {
 	tg.fill = document.getElementById("fill").checked;
 
 	transformCanvas();
-	window.context.strokeStyle = "#303030";
-	window.context.fillStyle = "#303030";
+	window.context.strokeStyle = "#448";
+	window.context.fillStyle = "#448";
 	let timeCount = 0;
 	interval = setInterval(function () {
 		timeCount++;
@@ -169,14 +169,22 @@ function saveSvg() {
 	let svgUnit = parseInt(document.getElementById('svg-unit').value);
 	let svg = `<svg version="1.1" xmlns="http://www.w3.org/2000/svg" 
 	baseProfile="full" 
-	transform="matrix(1 0 0 -1 0 0)"
+	transform="matrix(1 0 0 -1 10 10)"
 	width="${2 * svgUnit}" height="${2 * svgUnit}" 
 	viewBox="-1 -1 2 2"
-	stroke="${tg.fill & !svgAsShown ? 'transparent' : 'rgb(64,64,64)'}" 
+	stroke="${tg.fill & !svgAsShown ? 'transparent' : '#448'}" 
 	stroke-width="${1 / svgUnit}" 
-	fill="${tg.fill & !svgAsShown ? 'rgb(64,64,64)' : 'transparent'}">
-	${tg.getSvgAll(svgAsShown)}	
-	<circle cx="0" cy="0" r="1" stroke="rgb(32,32,32)" fill="transparent"/></svg>`;
+	fill="${tg.fill & !svgAsShown ? '#448' : 'transparent'}">`
+	let str = `<use href='#1overp'/>`;
+	if (!svgAsShown) {
+		for (let i = 1; i < tg.p; i++) {
+			str += `<use href='#1overp' transform='rotate(${360 / tg.p * i})'/>`;
+		}
+	}
+	svg += `<g id='1overp'>
+	${tg.getSvgAll(svgAsShown)}
+	</g>${str}
+	<circle cx="0" cy="0" r="1" stroke="#448" fill="transparent"/></svg>`;
 	let blob = new Blob([svg], { type: 'image/svg+xml' });
 	let link = document.createElement("a");
 	link.download = document.getElementById('svg-file').value;
@@ -189,8 +197,8 @@ function build_direct() {
 	setSvgFile();
 	setInfo('', 'normal');
 	transformCanvas();
-	window.context.strokeStyle = "#303030";
-	window.context.fillStyle = "#303030";
+	window.context.strokeStyle = "#448";
+	window.context.fillStyle = "#448";
 	tg = new TriangleGroup(
 		Number(document.getElementById("p").value),
 		Number(document.getElementById("q").value),
