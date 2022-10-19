@@ -42,6 +42,8 @@
 		document.getElementById('svg-unit').addEventListener('keydown', () => { if (event.keyCode == 13) saveSvg(); });
 		document.getElementById('svg-file').addEventListener('keydown', () => { if (event.keyCode == 13) saveSvg(); });
 		document.getElementById('save-svg').addEventListener('click', saveSvg);
+		
+		window.onload = () => document.getElementById('build').click();
 	</script>
 </head>
 
