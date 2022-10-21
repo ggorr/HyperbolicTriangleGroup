@@ -180,6 +180,13 @@ function saveSvg() {
 		for (let i = 1; i < tg.p; i++) {
 			str += `<use href='#1overp' transform='rotate(${360 / tg.p * i})'/>`;
 		}
+		if (!tg.fill)
+			for (let i = 0; i < tg.p; i++) {
+				let angle = 2 * Math.PI * i / tg.p;
+				let cos = Math.cos(angle);
+				let sin = Math.sin(angle);
+				str += `<use href='#1overp' transform='matrix(${cos} ${sin} ${sin} ${-cos} 0 0)'/>`;
+			}
 	}
 	svg += `<g id='1overp'>
 	${tg.getSvgAll(svgAsShown)}
