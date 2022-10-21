@@ -137,7 +137,7 @@ class TriangleGroup {
 					svg += Triangle.copy(sublist[j]).strokeSvg();
 			else
 				for (var j = 0; j < sublist.length; j++)
-					svg += Triangle.conjugate(sublist[j]).strokeSvg();
+					svg += Triangle.conjugate(sublist[j]).strokeSvgLinearOnly();
 		}
 		return svg;
 	}
