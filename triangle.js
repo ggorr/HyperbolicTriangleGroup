@@ -122,13 +122,27 @@ class Triangle {
 		// window.context.fillStyle = "#000000";
 		window.context.fill();
 	}
-	
+
 	strokeSvg() {
 		let path = `<path d='M${trunc(this.A.x)} ${trunc(this.A.y)}`
 		path += Triangle.strokeSegmentSvg(this.A, this.B);
 		path += Triangle.strokeSegmentSvg(this.B, this.C);
 		path += Triangle.strokeSegmentSvg(this.C, this.A);
 		return path + `'/>`;
+	}
+
+	strokeSvgLinearOnly() {
+		let path = '';
+		if (Complex.isLinear(this.A, this.B))
+			// path += `<line x1='${trunc(this.A.x)}' y1='${trunc(this.A.y)}' x2='${trunc(this.B.x)}' y2='${trunc(this.B.y)}'/>`;
+			path += `<path d='M${trunc(this.A.x)} ${trunc(this.A.y)}L${trunc(this.B.x)} ${trunc(this.B.y)}'/>`;
+		if (Complex.isLinear(this.B, this.C))
+			// path += `<line x1='${trunc(this.B.x)}' y1='${trunc(this.B.y)}' x2='${trunc(this.C.x)}' y2='${trunc(this.C.y)}'/>`;
+			path += `<path d='M${trunc(this.B.x)} ${trunc(this.B.y)}L${trunc(this.C.x)} ${trunc(this.C.y)}}'/>`;
+		if (Complex.isLinear(this.C, this.A))
+			// path += `<line x1='${trunc(this.C.x)}' y1='${trunc(this.C.y)}' x2='${trunc(this.A.x)}' y2='${trunc(this.A.y)}'/>`;
+			path += `<path d='M${trunc(this.C.x)} ${trunc(this.C.y)}L${trunc(this.A.x)} ${trunc(this.A.y)}'/>`;
+		return path;
 	}
 
 	fillSvg() {
