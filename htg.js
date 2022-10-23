@@ -175,7 +175,7 @@ function saveSvg() {
 	stroke="${tg.fill & !svgAsShown ? 'transparent' : '#448'}" 
 	stroke-width="${1 / svgUnit}" 
 	fill="${tg.fill & !svgAsShown ? '#448' : 'transparent'}">`
-	let str = `<use href='#1overp'/>`;
+	let str ='';
 	if (!svgAsShown) {
 		for (let i = 1; i < tg.p; i++) {
 			str += `<use href='#1overp' transform='rotate(${360 / tg.p * i})'/>`;
