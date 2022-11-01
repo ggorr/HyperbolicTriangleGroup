@@ -1,0 +1,120 @@
+html {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+    height: 100%;
+}
+
+.left {
+    float: left;
+    padding-right: 0px;
+    margin-right: 10px;
+    overflow-y: auto;
+    position: relative;
+    height: 100%;
+}
+
+.right {
+    float: left;
+}
+
+h2.heading {
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+th,
+td {
+    text-align: center;
+}
+
+label.pqr {
+    display: inline-block;
+    width: 15px;
+    text-align: right;
+    padding-right: 5px;
+}
+
+input.pqr {
+    width: 120px;
+}
+
+td.cond {
+    font-size: 9pt;
+    color: #FF0000;
+    text-align: center;
+}
+
+label.unit {
+    display: inline-block;
+    width: 70px;
+    text-align: right;
+    padding-right: 5px;
+}
+input.unit {
+    width: 55px;
+    margin-right: 5px;
+}
+
+button.unit {
+    width:40px
+}
+
+label.maxiter {
+    text-align: right;
+    padding-right: 5px;
+    display: inline-block;
+    width: 100px;
+}
+
+input.maxiter {
+    width: 70px;
+}
+
+label.time {
+    text-align: right;
+    padding-right: 5px;
+    display: inline-block;
+    width: 75px;
+}
+
+input.time {
+    width: 90px;
+}
+
+label.svg-unit {
+    display: inline-block;
+    width: 100px;
+    text-align: right;
+    padding-right: 5px;
+}
+
+input.svg-unit {
+    width: 70px;
+}
+
+label.svg-file {
+    display: inline-block;
+    width: 65px;
+    text-align: right;
+    padding-right: 5px;
+}
+
+input.svg-file {
+    width: 105px;
+}
+
+button.big {
+    width: 120px;
+}
+
+td.info {
+    display: inline-block;
+    width: 175px;
+    text-align: left;
+    /* font-weight: normal; */
+}
