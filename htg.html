@@ -1,140 +1,22 @@
-<!DOCTYPE html>
-<html lang="ko-KR" dir="ltr">
+<!DOCTYPE html><html lang="ko-KR" dir="ltr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Hyperbolic Triangle Group</title><link rel="icon" href="htg.ico"><link rel="stylesheet" href="/htg/htg.css"><script type="module">'use strict';
+import { loadSample, setUnit, showTriangle, build, stopBuilding, saveSvg, setInfo } from './htg.js';
 
-<head>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Hyperbolic Triangle Group</title>
-	<link rel="icon" href="htg.ico">
-	<link rel="stylesheet" href="htg.css">
-	<script type='module'>
-		'use strict';
-		import { loadSample, setUnit, showTriangle, build, stopBuilding, saveSvg, setInfo } from './htg.js';
-		document.getElementById('sample1').addEventListener('click', () => loadSample(1));
-		document.getElementById('sample2').addEventListener('click', () => loadSample(2));
-		document.getElementById('sample3').addEventListener('click', () => loadSample(3));
-		document.getElementById('sample4').addEventListener('click', () => loadSample(4));
-		document.getElementById('p').addEventListener('keydown', () => { if (event.keyCode == 13) showTriangle(); });
-		document.getElementById('q').addEventListener('keydown', () => { if (event.keyCode == 13) showTriangle(); });
-		document.getElementById('r').addEventListener('keydown', () => { if (event.keyCode == 13) showTriangle(); });
-		document.getElementById('unit').addEventListener('keydown', () => { if (event.keyCode == 13) showTriangle(); });
-		document.getElementById('auto-unit').addEventListener('click', setUnit);
-		document.getElementById('showtriangle').addEventListener('click', showTriangle);
-		document.getElementById('maxiter').addEventListener('keydown', () => { if (event.keyCode == 13) build(); });
-		document.getElementById('build').addEventListener('click', build);
-		document.getElementById('stop').addEventListener('click', stopBuilding);
-		document.getElementById('svg-unit').addEventListener('keydown', () => { if (event.keyCode == 13) saveSvg(); });
-		document.getElementById('svg-file').addEventListener('keydown', () => { if (event.keyCode == 13) saveSvg(); });
-		document.getElementById('save-svg').addEventListener('click', saveSvg);
-		
-		window.onload = () => document.getElementById('build').click();
-	</script>
-</head>
+document.getElementById('sample1').addEventListener('click', () => loadSample(1));
+document.getElementById('sample2').addEventListener('click', () => loadSample(2));
+document.getElementById('sample3').addEventListener('click', () => loadSample(3));
+document.getElementById('sample4').addEventListener('click', () => loadSample(4));
+document.getElementById('p').addEventListener('keydown', (e) => { if (e.keyCode == 13) showTriangle(); });
+document.getElementById('q').addEventListener('keydown', (e) => { if (e.keyCode == 13) showTriangle(); });
+document.getElementById('r').addEventListener('keydown', (e) => { if (e.keyCode == 13) showTriangle(); });
+document.getElementById('unit').addEventListener('keydown', (e) => { if (e.keyCode == 13) showTriangle(); });
+document.getElementById('auto-unit').addEventListener('click', setUnit);
+document.getElementById('showtriangle').addEventListener('click', showTriangle);
+document.getElementById('maxiter').addEventListener('keydown', (e) => { if (e.keyCode == 13) build(); });
+document.getElementById('build').addEventListener('click', build);
+document.getElementById('stop').addEventListener('click', stopBuilding);
+document.getElementById('svg-unit').addEventListener('keydown', (e) => { if (e.keyCode == 13) saveSvg(); });
+document.getElementById('svg-file').addEventListener('keydown', (e) => { if (e.keyCode == 13) saveSvg(); });
+document.getElementById('save-svg').addEventListener('click', saveSvg);
 
-<body>
-	<div class='left'>
-		<h2 class='heading'>Hyperbolic<br>Triangle Group</h2>
-		<table>
-			<tr>
-				<th>
-					<button id='sample1'>1</button>
-					<button id='sample2'>2</button>
-					<button id='sample3'>3</button>
-					<button id='sample4'>4</button>
-				</th>
-			</tr>
-			<tr>
-				<th>
-					<label class="pqr" for="p">p:</label><input class="pqr" id="p" value="2" required>
-				</th>
-			</tr>
-			<tr>
-				<th>
-					<label class="pqr" for="q">q:</label><input class="pqr" id="q" value="3" required>
-				</th>
-			</tr>
-			<tr>
-				<th>
-					<label class="pqr" for="r">r:</label><input class="pqr" id="r" value="7" required>
-				</th>
-			</tr>
-			<tr>
-				<td class="cond"><sup>*</sup>1/p + 1/q + 1/r &lt 1</td>
-			</tr>
-			<tr></tr>
-			<tr>
-				<th>
-					<label class='unit' for='unit'>unit(px):</label><input class='unit' id='unit'></input><button
-						class='unit' id='auto-unit'>auto</button>
-				</th>
-			</tr>
-			<tr></tr>
-			<tr>
-				<th><button class='big' id='showtriangle'>Show Triangle</button></th>
-			</tr>
-			<tr></tr>
-			<tr>
-				<th>
-					<label class="maxiter" for="maxiter">max iter:</label><input class="maxiter" id="maxiter"
-						value="44">
-				</th>
-			</tr>
-			<tr>
-				<th><input id="fill" type="checkbox" checked> <label for='fill'>Fill Triangle</label></th>
-			</tr>
-			<tr>
-				<th><button class='big' id='build'>Build Image</button></th>
-			</tr>
-			<tr>
-				<th><button class='big' id="stop">Stop Building</button></th>
-			</tr>
-			<tr>
-				<td>
-					<label class="time" for="iteration">iteration:</label><input class="time" id="iteration" readonly>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<label class="time" for="triangles">triangles:</label><input class="time" id="triangles" readonly>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<label class="time" for="time">time(sec):</label><input class="time" id="time" readonly>
-				</td>
-			</tr>
-			<tr></tr>
-			<tr>
-				<th>
-					<label class="svg-unit" for='svg-unit'>svg unit(px):</label><input class="svg-unit" id="svg-unit"
-						value="450">
-				</th>
-			</tr>
-			<tr>
-				<th>
-					<label class='svg-file' for='svg-file'>svg file:</label><input class='svg-file' id='svg-file'>
-				</th>
-			</tr>
-			<tr>
-				<th><button class='big' id='save-svg'>Save as SVG</button></th>
-			</tr>
-			<tr></tr>
-			<tr>
-				<td class="info" id="info">info:</td>
-			</tr>
-			<!--
-			<tr>
-				<th><button class="big" onclick="setInfo('')">Clear Info</button></th>
-			</tr>
-			-->
-			<tr>
-				<th>by K. Park<br>ggorr.kp@gmail.com</th>
-			</tr>
-		</table>
-	</div>
-	<div class='right'>
-		<canvas id="canvas"></canvas>
-	</div>
-</body>
-
-</html>
+window.onload = () => document.getElementById('build').click();
+</script></head><body><div class="left"> <h2 class="heading">Hyperbolic<br>Triangle Group</h2><table><tr><th><button id="sample1">1</button>&nbsp;<button id="sample2">2</button>&nbsp;<button id="sample3">3</button>&nbsp;<button id="sample4">4</button></th></tr><tr><th><label class="pqr" for="p">p:</label><input class="pqr" id="p" value="2" required></th></tr><tr><th><label class="pqr" for="q">q:</label><input class="pqr" id="q" value="3" required></th></tr><tr><th><label class="pqr" for="r">r:</label><input class="pqr" id="r" value="7" required></th></tr><tr><td class="cond"><sup>*</sup>1/p + 1/q + 1/r &lt 1</td></tr><tr></tr><tr> <th> <label class="unit" for="unit">unit(px):</label><input class="unit" id="unit"><button class="unit" id="auto-unit">auto</button></th></tr><tr></tr><tr><th><button class="big" id="showtriangle">Show Triangle</button></th></tr><tr></tr><tr><th><label class="maxiter" for="maxiter">max iter:</label><input class="maxiter" id="maxiter" value="44"></th></tr><tr><th><input id="fill" type="checkbox" checked>&nbsp;<label for="fill">Fill Triangle</label></th></tr><tr><th><button class="big" id="build">Build Image</button></th></tr><tr><th><button class="big" id="stop">Stop Building</button></th></tr><tr><td><label class="time" for="iteration">iteration:</label><input class="time" id="iteration" readonly></td></tr><tr><td><label class="time" for="triangles">triangles:</label><input class="time" id="triangles" readonly></td></tr><tr> <td><label class="time" for="time">time(sec):</label><input class="time" id="time" readonly></td></tr><tr> </tr><tr> <th><label class="svg-unit" for="svg-unit">svg unit(px):</label><input class="svg-unit" id="svg-unit" value="450"></th></tr><tr><th><label class="svg-file" for="svg-file">svg file:</label><input class="svg-file" id="svg-file"></th></tr><tr><th><button class="big" id="save-svg">Save as SVG</button></th></tr><tr></tr><tr> <td class="info" id="info">info:</td></tr><tr> <th>by K. Park<br>ggorr.kp@gmail.com</th></tr></table></div><div class="right" id="right"><canvas id="canvas"></canvas></div></body></html>
