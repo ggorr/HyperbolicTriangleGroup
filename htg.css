@@ -9,21 +9,30 @@ body {
     height: 100%;
 }
 
-.left {
+div.left {
     float: left;
-    padding-right: 0px;
+    padding-right: 10px;
     margin-right: 10px;
     overflow-y: auto;
     position: relative;
     height: 100%;
 }
 
-.right {
+div.right {
     float: left;
+    height: 100%;
 }
 
-h2.heading {
-    padding-bottom: 10px;
+div.table {
+    padding-right: 10px;
+    overflow-y: auto;
+    position: relative;
+    margin-bottom: 10px;
+    margin-left: 10px;
+}
+
+h3.title {
+    /* padding-bottom: 10px; */
     text-align: center;
 }
 
@@ -32,89 +41,68 @@ td {
     text-align: center;
 }
 
-label.pqr {
+/* label.pqr {
     display: inline-block;
     width: 15px;
     text-align: right;
     padding-right: 5px;
-}
+} */
 
 input.pqr {
-    width: 120px;
+    width: 28px;
 }
 
-td.cond {
-    font-size: 9pt;
-    color: #FF0000;
-    text-align: center;
-}
-
-label.unit {
+/* label.unit {
     display: inline-block;
-    width: 70px;
+    width: 50px;
     text-align: right;
     padding-right: 5px;
-}
+} */
+
 input.unit {
-    width: 55px;
-    margin-right: 5px;
+    width: 40px;
+    /* margin-right: 5px; */
 }
 
-button.unit {
-    width:40px
-}
-
-label.maxiter {
+/* label.maxiter {
     text-align: right;
     padding-right: 5px;
     display: inline-block;
-    width: 100px;
-}
+    width: 40px;
+} */
 
 input.maxiter {
     width: 70px;
 }
 
-label.time {
-    text-align: right;
-    padding-right: 5px;
+span.time,
+td.info {
+    font-size: 9pt;
+}
+
+/* label.svg-unit {
     display: inline-block;
-    width: 75px;
-}
-
-input.time {
-    width: 90px;
-}
-
-label.svg-unit {
-    display: inline-block;
-    width: 100px;
-    text-align: right;
-    padding-right: 5px;
-}
-
-input.svg-unit {
     width: 70px;
+    text-align: right;
+    padding-right: 5px;
+} */
+
+input.svg-unit,
+input.svg-file {
+    width: 80px;
 }
 
-label.svg-file {
+/* label.svg-file {
     display: inline-block;
     width: 65px;
     text-align: right;
     padding-right: 5px;
-}
+} */
 
-input.svg-file {
-    width: 105px;
-}
-
-button.big {
+/* button.big {
     width: 120px;
-}
+} */
 
-td.info {
-    display: inline-block;
-    width: 175px;
-    text-align: left;
-    /* font-weight: normal; */
+button.build {
+    width: 70px;
 }
