@@ -9,7 +9,7 @@ document.getElementById('p').addEventListener('keydown', (e) => { if (e.keyCode 
 document.getElementById('q').addEventListener('keydown', (e) => { if (e.keyCode == 13) showTriangle(); });
 document.getElementById('r').addEventListener('keydown', (e) => { if (e.keyCode == 13) showTriangle(); });
 document.getElementById('unit').addEventListener('keydown', (e) => { if (e.keyCode == 13) showTriangle(); });
-document.getElementById('auto-unit').addEventListener('click', setUnit);
+document.getElementById('fit-unit').addEventListener('click', setUnit);
 document.getElementById('showtriangle').addEventListener('click', showTriangle);
 document.getElementById('maxiter').addEventListener('keydown', (e) => { if (e.keyCode == 13) build(); });
 document.getElementById('build').addEventListener('click', build);
@@ -19,4 +19,21 @@ document.getElementById('svg-file').addEventListener('keydown', (e) => { if (e.k
 document.getElementById('save-svg').addEventListener('click', saveSvg);
 
 window.onload = () => document.getElementById('build').click();
-</script></head><body><div class="left"> <h2 class="heading">Hyperbolic<br>Triangle Group</h2><table><tr><th><button id="sample1">1</button>&nbsp;<button id="sample2">2</button>&nbsp;<button id="sample3">3</button>&nbsp;<button id="sample4">4</button></th></tr><tr><th><label class="pqr" for="p">p:</label><input class="pqr" id="p" value="2" required></th></tr><tr><th><label class="pqr" for="q">q:</label><input class="pqr" id="q" value="3" required></th></tr><tr><th><label class="pqr" for="r">r:</label><input class="pqr" id="r" value="7" required></th></tr><tr><td class="cond"><sup>*</sup>1/p + 1/q + 1/r &lt 1</td></tr><tr></tr><tr> <th> <label class="unit" for="unit">unit(px):</label><input class="unit" id="unit"><button class="unit" id="auto-unit">auto</button></th></tr><tr></tr><tr><th><button class="big" id="showtriangle">Show Triangle</button></th></tr><tr></tr><tr><th><label class="maxiter" for="maxiter">max iter:</label><input class="maxiter" id="maxiter" value="44"></th></tr><tr><th><input id="fill" type="checkbox" checked>&nbsp;<label for="fill">Fill Triangle</label></th></tr><tr><th><button class="big" id="build">Build Image</button></th></tr><tr><th><button class="big" id="stop">Stop Building</button></th></tr><tr><td><label class="time" for="iteration">iteration:</label><input class="time" id="iteration" readonly></td></tr><tr><td><label class="time" for="triangles">triangles:</label><input class="time" id="triangles" readonly></td></tr><tr> <td><label class="time" for="time">time(sec):</label><input class="time" id="time" readonly></td></tr><tr> </tr><tr> <th><label class="svg-unit" for="svg-unit">svg unit(px):</label><input class="svg-unit" id="svg-unit" value="450"></th></tr><tr><th><label class="svg-file" for="svg-file">svg file:</label><input class="svg-file" id="svg-file"></th></tr><tr><th><button class="big" id="save-svg">Save as SVG</button></th></tr><tr></tr><tr> <td class="info" id="info">info:</td></tr><tr> <th>by K. Park<br>ggorr.kp@gmail.com</th></tr></table></div><div class="right"><canvas id="canvas"></canvas></div></body></html>
+
+const resizeObserver = new ResizeObserver(entries => {
+	let leftHeight = document.getElementById('left').clientHeight;
+	let windowHeight = window.innerHeight;
+	let titleHeight = document.getElementById('title').scrollHeight;
+	let authorHeight = document.getElementById('author').scrollHeight;
+	let tableHeight =  document.getElementById('table').scrollHeight;
+	let height = Math.min(tableHeight, windowHeight - titleHeight - authorHeight - 52);
+	if (height < tableHeight / 2)
+		height = tableHeight;
+	// console.log(leftHeight + ', ' + titleHeight + ', ' + authorHeight + ', ' + tableHeight + ', ' + windowHeight);
+	document.getElementById('table').style.height = height + 'px';
+	// console.log(leftHeight + ', ' + titleHeight + ', ' + authorHeight + ', ' + tableHeight + ', ' + windowHeight);
+})
+resizeObserver.observe(document.body)
+
+
+</script></head><body id="body"><div class="left" id="left"><div id="title"><h3 class="title">Hyperbolic<br>Triangle Group</h3></div><div class="table" id="table"><table><tr><th><button id="sample1">1</button>&nbsp;<button id="sample2">2</button>&nbsp;<button id="sample3">3</button>&nbsp;<button id="sample4">4</button></th></tr><tr><th><label class="pqr" for="p">p:</label>&nbsp;<input class="pqr" id="p" value="2" title="1/p + 1/q + 1/r &lt; 1" required>&nbsp;<label class="pqr" for="q">q:</label>&nbsp;<input class="pqr" id="q" value="3" title="1/p + 1/q + 1/r &lt; 1" required>&nbsp;<label class="pqr" for="r">r:</label>&nbsp;<input class="pqr" id="r" value="7" title="1/p + 1/q + 1/r &lt; 1" required></th></tr><tr></tr><tr> <th> <label class="unit" for="unit">radius:</label>&nbsp;<input class="unit" id="unit" title="px">&nbsp;<button class="unit" id="fit-unit">Page Fit</button></th></tr><tr></tr><tr><th><button class="big" id="showtriangle">Show Triangle</button></th></tr><tr></tr><tr><th><label class="maxiter" for="maxiter">iter:</label>&nbsp;<input class="maxiter" id="maxiter" value="44" title="maximum number of iteration"></th></tr><tr><th><input id="fill" type="checkbox" checked>&nbsp;<label for="fill">fill triangle</label></th></tr><tr><th><button class="build" id="stop">Stop</button>&nbsp;<button class="build" id="build">Build</button></th></tr><tr><td><span class="time">iteration:</span>&nbsp;<span class="time" id="iteration"></span></td></tr><tr><td><span class="time">triangles:</span>&nbsp;<span class="time" id="triangles"></span></td></tr><tr> <td><span class="time">time(sec):</span>&nbsp;<span class="time" id="time"></span></td></tr><tr> </tr><tr> <th><label class="svg-unit" for="svg-unit">svg unit:</label>&nbsp;<input class="svg-unit" id="svg-unit" value="450" title="px"></th></tr><tr><th><label class="svg-file" for="svg-file">svg file:</label>&nbsp;<input class="svg-file" id="svg-file"></th></tr><tr><th><button class="big" id="save-svg">Download SVG</button></th></tr><tr></tr><tr> <td class="info" id="info"><center>info:</center></td></tr></table></div><div id="author"><center><strong>by K. Park<br>ggorr.kp@gmail.com</strong></center></div></div><div class="right" id="right"><canvas id="canvas"></canvas></div></body></html>
