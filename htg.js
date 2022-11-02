@@ -23,12 +23,12 @@ function loadSample(button) {
 	} else if (button == 2) {
 		document.getElementById("p").value = "2";
 		document.getElementById("q").value = "3";
-		document.getElementById("r").value = "Infinity";
+		document.getElementById("r").value = "Inf";
 		document.getElementById("maxiter").value = "30";
 	} else if (button == 3) {
 		document.getElementById("p").value = "4";
-		document.getElementById("q").value = "Infinity";
-		document.getElementById("r").value = "Infinity";
+		document.getElementById("q").value = "Inf";
+		document.getElementById("r").value = "Inf";
 		document.getElementById("maxiter").value = "16";
 	} else {
 		document.getElementById("p").value = "4";
@@ -38,6 +38,20 @@ function loadSample(button) {
 	}
 }
 
+function readPqr() {
+	let sp = document.getElementById("p").value.trim();
+	let p = sp == 'Inf' ? Infinity : parseInt(sp);
+	let sq = document.getElementById("q").value.trim();
+	let q = sq == 'Inf' ? Infinity : parseInt(sq);
+	let sr = document.getElementById("r").value.trim();
+	let r = sr == 'Inf' ? Infinity : parseInt(sr);
+	if (1 / p + 1 / q + 1 / r >= 1) {
+		setInfo("1/p + 1/q + 1/r < 1", 'error');
+		throw new Error('"1/p + 1/q + 1/r < 1"');
+	}
+	return [p, q, r];
+}
+
 let worker;
 let interval;
 let tg;
@@ -45,7 +59,7 @@ let svgAsShown;
 let offset = 10;
 
 function setUnit() {
-	let unit = Math.floor(Math.min(window.innerWidth, window.innerHeight) / 2) - 2 * offset;
+	let unit = Math.floor(Math.min(window.innerWidth, window.innerHeight) / 2) - offset;
 	document.getElementById('unit').value = unit;
 	return unit;
 }
@@ -72,13 +86,7 @@ function showTriangle() {
 	setInfo('', 'normal');
 	transformCanvas();
 	window.context.strokeStyle = "#448";
-	let p = Number(document.getElementById("p").value);
-	let q = Number(document.getElementById("q").value);
-	let r = Number(document.getElementById("r").value);
-	if (1 / p + 1 / q + 1 / r >= 1) {
-		setInfo("1/p+1/q+1/r<1", 'error');
-		return;
-	}
+	let [p, q, r] = readPqr();
 	tg = new TriangleGroup(p, q, r);
 	tg.showTriangle();
 	drawBigCircle();
@@ -92,13 +100,7 @@ function build() {
 	svgAsShown = false;
 	setSvgFile();
 	setInfo('', 'normal');
-	let p = Number(document.getElementById("p").value);
-	let q = Number(document.getElementById("q").value);
-	let r = Number(document.getElementById("r").value);
-	if (1 / p + 1 / q + 1 / r >= 1) {
-		setInfo("1/p+1/q+1/r<1", 'error');
-		return;
-	}
+	let [p, q, r] = readPqr();
 	tg = new TriangleGroup(p, q, r);
 	tg.iter = parseInt(document.getElementById("maxiter").value);
 	tg.fill = document.getElementById("fill").checked;
@@ -121,9 +123,9 @@ function build() {
 		tg.list.push(event.data);
 		tg.triangleCount += event.data.length;
 		tg.drawStep(iterCount++);
-		document.getElementById("time").value = (timeCount / 10).toFixed(1);
-		document.getElementById("triangles").value = "2p x " + tg.triangleCount;
-		document.getElementById("iteration").value = iterCount;
+		document.getElementById("time").innerHTML = (timeCount / 10).toFixed(1);
+		document.getElementById("triangles").innerHTML = "2p x " + tg.triangleCount;
+		document.getElementById("iteration").innerHTML = iterCount;
 		if (iterCount >= tg.iter) {
 			drawBigCircle();
 			stopBuilding();
@@ -138,8 +140,9 @@ function build() {
 	// 	for (let i = 0; i < tg.list.length; i++)
 	// 		tg.triangleCount += tg.list[i].length;
 	// 	tg.drawAll();
-	// 	document.getElementById("triangles").value = "2p x " + tg.triangleCount;
-	// 	document.getElementById("time").value = (timeCount / 10).toFixed(1);
+	// 	document.getElementById("triangles").innerHtml = "2p x " + tg.triangleCount;
+	// 	document.getElementById("time").innerHtml = (timeCount / 10).toFixed(1);
+	// 	document.getElementById("iteration").innerHTML = '';
 	// 	stopBuilding();
 	// }
 	/////////////////////////////////////////////////////////////////////
@@ -156,13 +159,10 @@ function stopBuilding() {
 }
 
 function setSvgFile() {
-	let p = document.getElementById("p").value.trim();
-	if (p === 'Infinity') p = 'Inf';
-	let q = document.getElementById("q").value.trim();
-	if (q === 'Infinity') q = 'Inf';
-	let r = document.getElementById("r").value.trim();
-	if (r === 'Infinity') r = 'Inf';
-	document.getElementById('svg-file').value = `${p}${q}${r}.svg`;
+	let sp = document.getElementById("p").value.trim();
+	let sq = document.getElementById("q").value.trim();
+	let sr = document.getElementById("r").value.trim();
+	document.getElementById('svg-file').value = `${sp}${sq}${sr}.svg`;
 }
 
 function saveSvg() {
@@ -192,6 +192,7 @@ function saveSvg() {
 	${tg.getSvgAll(svgAsShown)}
 	</g>${str}
 	<circle cx="0" cy="0" r="1" stroke="#448" fill="transparent"/></svg>`;
+	// download
 	let blob = new Blob([svg], { type: 'image/svg+xml' });
 	let link = document.createElement("a");
 	link.download = document.getElementById('svg-file').value;
@@ -206,10 +207,8 @@ function build_direct() {
 	transformCanvas();
 	window.context.strokeStyle = "#448";
 	window.context.fillStyle = "#448";
-	tg = new TriangleGroup(
-		Number(document.getElementById("p").value),
-		Number(document.getElementById("q").value),
-		Number(document.getElementById("r").value));
+	let [p, q, r] = readPqr();
+	tg = new TriangleGroup(p, q, r);
 	tg.iter = parseInt(document.getElementById("maxiter").value);
 	tg.fill = document.getElementById("fill").checked;
 	tg.draw_direct();
